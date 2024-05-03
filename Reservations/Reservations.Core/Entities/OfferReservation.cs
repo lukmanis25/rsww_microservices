@@ -1,4 +1,5 @@
-﻿using Reservations.Core.Exceptions;
+﻿using Reservations.Core.Events;
+using Reservations.Core.Exceptions;
 using Reservations.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -31,11 +32,11 @@ namespace Reservations.Core.Entities
                 Status = ReservationStatus.New
             };
 
-            var travelTo = travelToId != null
+            var travelTo = travelToId != null && travelBackId != Guid.Empty
                 ? new ResourceReservation { ResourceId = travelToId.Value, Status = ReservationStatus.New }
                 : null;
 
-            var travelBack = travelBackId != null
+            var travelBack = travelBackId != null && travelBackId != Guid.Empty
                 ? new ResourceReservation { ResourceId = travelBackId.Value, Status = ReservationStatus.New }
                 : null;
 
@@ -74,7 +75,7 @@ namespace Reservations.Core.Entities
         {
             var offerReservation = new OfferReservation(customerId, numberOfAdults, numberOfChildren, 
                 hotelId, rooms, travelToId, travelBackId);
-            offerReservation.AddEvent(new OfferReservationCreated(offerReservation));
+            offerReservation.AddEvent(new  OfferReservationCreated(offerReservation));
             return offerReservation;
         }
 

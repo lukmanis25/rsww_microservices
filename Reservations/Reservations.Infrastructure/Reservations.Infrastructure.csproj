@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Convey" Version="1.1.448" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reservations.Application\Reservations.Application.csproj" />
+  </ItemGroup>
+
+</Project>
