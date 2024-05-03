@@ -10,6 +10,7 @@ namespace Reservations.Application.Commands
 {
     public class AddOfferReservation : ICommand
     {
+        public Guid ReservationId { get; set; }
         public Guid CustomerId { get; set; }
         public int NumberOfAdults { get; set; }
         public int NumberOfChildren { get; set; }
@@ -18,10 +19,11 @@ namespace Reservations.Application.Commands
         public Guid? TravelToId { get; set; }
         public Guid? TravelBackId { get; set; }
 
-        public AddOfferReservation(Guid customerId, int numberOfAdults, int numberOfChildren,
+        public AddOfferReservation(Guid reservationId, Guid customerId, int numberOfAdults, int numberOfChildren,
                         Guid hotelId, IEnumerable<Room> rooms, Guid? travelToId = null,
                         Guid? travelBackId = null)
         {
+            ReservationId = reservationId;
             CustomerId = customerId;
             NumberOfAdults = numberOfAdults;
             NumberOfChildren = numberOfChildren;
