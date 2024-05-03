@@ -22,7 +22,7 @@ var app = builder.Build();
 
 app.UserInfrastructure();
 
-//MOZNA TAK USTAWIAC ENDPOINT ALE SWAGGER WTEDY NIE DZIALA
+//MOZNA TAK USTAWIAC ENDPOINT ALE SWAGGER WTEDY NIE DZIALA (jakoœ powinien dzia³aæ)
 //app.UseDispatcherEndpoints(endpoints => endpoints
 //        .Post<AddOfferReservation>("/api/reservation",
 //            afterDispatch: (cmd, ctx) => ctx.Response.Created($"/api/reservation/{cmd.ReservationId}"))
@@ -39,7 +39,7 @@ if (app.Environment.IsDevelopment())
 app.MapPost("/api/reservation", async (ICommandDispatcher commandDispatcher, AddOfferReservation command) =>
 {
     await commandDispatcher.SendAsync(command);
-    return Results.Created($"/api/reservation/{command.ReservationId}", null);
+    return Results.Created($"/api/reservation/{command.CustomerId}", null);
 })
 .WithName("PostReservation")
 .WithOpenApi();

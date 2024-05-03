@@ -12,6 +12,7 @@ namespace Reservations.Core.Entities
     public class OfferReservation : AggregateRoot
     {
         public Guid CustomerId { get; protected set; }
+        public Guid OffertId { get; set; }
         public int NumberOfAdults { get; protected set; }
         public int NumberOfChildren { get; protected set; }
         public HotelRoomsReservation HotelRooms { get; protected set; }
@@ -19,40 +20,26 @@ namespace Reservations.Core.Entities
         public ResourceReservation TravelBack { get; protected set; }
         public DateTime CreationDateTime { get; protected set; }
 
-        public OfferReservation(Guid customerId, int numberOfAdults, int numberOfChildren,
-                            Guid hotelId, IEnumerable<Room> rooms,  Guid? travelToId = null,
-                            Guid? travelBackId = null)
+        public OfferReservation(Guid id, Guid customerId, Guid offertId, int numberOfAdults, int numberOfChildren,
+                            HotelRoomsReservation hotelRooms,  ResourceReservation travelTo,
+                            ResourceReservation travelBack, DateTime creationDateTime, int version = 0)
         {
 
-
-            var hotelRooms = new HotelRoomsReservation
-            {
-                ResourceId = hotelId,
-                Rooms = rooms,
-                Status = ReservationStatus.New
-            };
-
-            var travelTo = travelToId != null && travelBackId != Guid.Empty
-                ? new ResourceReservation { ResourceId = travelToId.Value, Status = ReservationStatus.New }
-                : null;
-
-            var travelBack = travelBackId != null && travelBackId != Guid.Empty
-                ? new ResourceReservation { ResourceId = travelBackId.Value, Status = ReservationStatus.New }
-                : null;
-
-            if (customerId == Guid.Empty || hotelId == Guid.Empty || numberOfAdults <= 0)
+            if (customerId == Guid.Empty || offertId == Guid.Empty || numberOfAdults <= 0)
             {
                 throw new InvalidOfferReservationException();
             }
             ValidHotelRooms(hotelRooms, numberOfAdults + numberOfChildren);
-
+            Id = id;
+            OffertId = offertId;
             CustomerId = customerId;
             NumberOfAdults = numberOfAdults;
             NumberOfChildren = numberOfChildren;
             HotelRooms = hotelRooms;
             TravelTo = travelTo;
             TravelBack = travelBack;
-            CreationDateTime = DateTime.Now;
+            CreationDateTime = creationDateTime;
+            Version = version;
         }
 
         private static void ValidHotelRooms(HotelRoomsReservation hotelRooms, int numberOfPeople)
@@ -69,12 +56,31 @@ namespace Reservations.Core.Entities
             }
         }
 
-        public static OfferReservation Create(Guid customerId, int numberOfAdults, int numberOfChildren,
+        public static OfferReservation Create(Guid customerId, Guid offerId, int numberOfAdults, int numberOfChildren,
                             Guid hotelId, IEnumerable<Room> rooms, Guid? travelToId = null,
                             Guid? travelBackId = null)
         {
-            var offerReservation = new OfferReservation(customerId, numberOfAdults, numberOfChildren, 
-                hotelId, rooms, travelToId, travelBackId);
+            var id = Guid.NewGuid();
+
+            var hotelRooms = new HotelRoomsReservation
+            {
+                ResourceId = hotelId,
+                Rooms = rooms,
+                Status = ReservationStatus.New
+            };
+
+            var travelTo = travelToId != null && travelBackId != Guid.Empty
+                ? new ResourceReservation { ResourceId = travelToId.Value, Status = ReservationStatus.New }
+                : null;
+
+            var travelBack = travelBackId != null && travelBackId != Guid.Empty
+                ? new ResourceReservation { ResourceId = travelBackId.Value, Status = ReservationStatus.New }
+                : null;
+
+            var createDateTime = DateTime.Now;
+
+            var offerReservation = new OfferReservation(id, customerId, offerId, numberOfAdults, numberOfChildren, 
+                hotelRooms, travelTo, travelBack, createDateTime);
             offerReservation.AddEvent(new  OfferReservationCreated(offerReservation));
             return offerReservation;
         }
