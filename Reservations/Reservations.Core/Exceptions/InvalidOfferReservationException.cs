@@ -2,10 +2,10 @@
 
 namespace Reservations.Core.Exceptions
 {
-    public class NoAdultsInOfferReservationException : DomainException
+    public class InvalidOfferReservationException : DomainException
     {
-        public override string Code { get; } = "no_adults_offer_reservation";
+        public override string Code { get; } = "invalid_offer_reservation";
 
-        public NoAdultsInOfferReservationException() : base($"No adults in offer reservation") { }
+        public InvalidOfferReservationException() : base($"Invalid offer reservation") { }
     }
 }
