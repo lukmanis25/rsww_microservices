@@ -25,9 +25,13 @@ namespace Reservations.Core.Entities
                             ResourceReservation travelBack, DateTime creationDateTime, int version = 0)
         {
 
-            if (customerId == Guid.Empty || offertId == Guid.Empty || numberOfAdults <= 0)
+            if (customerId == Guid.Empty || offertId == Guid.Empty)
             {
                 throw new InvalidOfferReservationException();
+            }
+            if(numberOfAdults <= 0)
+            {
+                throw new NoAdultsInOfferReservationException();
             }
             ValidHotelRooms(hotelRooms, numberOfAdults + numberOfChildren);
             Id = id;

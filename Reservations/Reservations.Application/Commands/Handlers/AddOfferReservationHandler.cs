@@ -13,12 +13,12 @@ namespace Reservations.Application.Commands.Handlers
 {
     public class AddOfferReservationHandler : ICommandHandler<AddOfferReservation>
     {
-        //private readonly IOfferReservationRepository _repository;
+        private readonly IOfferReservationRepository _repository;
 
-        //public AddOfferReservationHandler(IOfferReservationRepository repository)
-        //{
-        //    _repository = repository;
-        //}
+        public AddOfferReservationHandler(IOfferReservationRepository repository)
+        {
+            _repository = repository;
+        }
         public async Task HandleAsync(AddOfferReservation command, CancellationToken cancellationToken = default)
         {
             var reservation = OfferReservation.Create(
@@ -31,8 +31,7 @@ namespace Reservations.Application.Commands.Handlers
                 travelToId: command.TravelToId,
                 travelBackId: command.TravelBackId
                 );
-            var x = 0;
-            //await _repository.AddAsync(reservation);
+            await _repository.AddAsync(reservation);
         }
     }
 }

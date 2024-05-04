@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reservations.Application", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reservations.Infrastructure", "..\Reservations.Infrastructure\Reservations.Infrastructure.csproj", "{EE003D76-8ADC-4183-9774-057535332F7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reservations.Api", "..\Reservations.Api\Reservations.Api.csproj", "{3EE014E6-720B-48D5-9CD2-BE5B52706E09}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reservations.TestApi", "..\Reservations.TestApi\Reservations.TestApi.csproj", "{7BFCBC7F-B758-488A-83E0-018FF2B55B2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reservations.Api", "..\Reservations.TestApi\Reservations.Api.csproj", "{7BFCBC7F-B758-488A-83E0-018FF2B55B2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,18 +57,6 @@ Global
 		{EE003D76-8ADC-4183-9774-057535332F7D}.Release|x64.Build.0 = Release|Any CPU
 		{EE003D76-8ADC-4183-9774-057535332F7D}.Release|x86.ActiveCfg = Release|Any CPU
 		{EE003D76-8ADC-4183-9774-057535332F7D}.Release|x86.Build.0 = Release|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Debug|x64.Build.0 = Debug|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Debug|x86.Build.0 = Debug|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Release|x64.ActiveCfg = Release|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Release|x64.Build.0 = Release|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Release|x86.ActiveCfg = Release|Any CPU
-		{3EE014E6-720B-48D5-9CD2-BE5B52706E09}.Release|x86.Build.0 = Release|Any CPU
 		{7BFCBC7F-B758-488A-83E0-018FF2B55B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BFCBC7F-B758-488A-83E0-018FF2B55B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BFCBC7F-B758-488A-83E0-018FF2B55B2B}.Debug|x64.ActiveCfg = Debug|Any CPU

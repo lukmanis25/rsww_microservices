@@ -1,4 +1,5 @@
-﻿using Reservations.Core.Entities;
+﻿using Reservations.Application.DTO;
+using Reservations.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,22 @@ namespace Reservations.Infrastructure.Mongo.Documents
                 TravelBack = entity.TravelBack,
                 CreationDateTime = entity.CreationDateTime,
                 Version = entity.Version
+            };
+        }
+
+        public static OfferReservationDto AsDto(this OfferReservationDocument document)
+        {
+            return new OfferReservationDto
+            {
+                Id = document.Id,
+                CustomerId = document.CustomerId,
+                OffertId = document.OffertId,
+                NumberOfAdults = document.NumberOfAdults,
+                NumberOfChildren = document.NumberOfChildren,
+                HotelRooms = document.HotelRooms,
+                TravelTo = document.TravelTo,
+                TravelBack = document.TravelBack,
+                CreationDateTime = document.CreationDateTime,
             };
         }
     }
