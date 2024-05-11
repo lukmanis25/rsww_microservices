@@ -20,19 +20,20 @@ namespace Reservations.Core.Entities
         public ResourceReservation TravelTo { get; protected set; }
         public ResourceReservation TravelBack { get; protected set; }
         public bool IsPromotion { get; protected set; }
-        public DateTime CreationDateTime { get; protected set; }
         public float TotalPrice { get; protected set; }
+        public DateTime CreationDateTime { get; protected set; }
 
         public Reservation(Guid id, Guid customerId, int numberOfAdults, int numberOfChildrenTo3, int numberOfChildrenTo10,
                             int numberOfChildrenTo18, HotelRoomReservation hotelRoom,  ResourceReservation travelTo,
-                            ResourceReservation travelBack, bool isPromotion, DateTime creationDateTime, int version = 0)
+                            ResourceReservation travelBack, bool isPromotion, float totalPrice, DateTime creationDateTime, 
+                            int version = 0)
         {
 
             if (customerId == Guid.Empty)
             {
                 throw new InvalidReservationException();
             }
-            if(numberOfAdults <= 0)
+            if (numberOfAdults <= 0)
             {
                 throw new NoAdultsInReservationException();
             }
@@ -49,6 +50,8 @@ namespace Reservations.Core.Entities
             IsPromotion = isPromotion;
             CreationDateTime = creationDateTime;
             Version = version;
+            TotalPrice = totalPrice;
+
         }
 
         private static void ValidHotelRooms(HotelRoomReservation hotelRoom, int numberOfPeople)
@@ -63,6 +66,13 @@ namespace Reservations.Core.Entities
             {
                 throw new HotelRoomCapacityExceededException(numberOfPeople, roomsOccupancy);
             }
+        }
+
+        private static float CalculateTotalPrice(float hotelRoomPrice, float travelToPrice, float travelBackPrice, MealType mealType)
+        {
+            float totalPrice = hotelRoomPrice + travelToPrice + travelBackPrice;
+            totalPrice = mealType == MealType.AllInclusive ? totalPrice + 500 : totalPrice;
+            return totalPrice;
         }
 
         public static Reservation Create(
@@ -118,9 +128,10 @@ namespace Reservations.Core.Entities
                 travelTo: travelTo,
                 travelBack: travelBack,
                 creationDateTime: creationDateTime,
-                isPromotion: isPromotion
+                isPromotion: isPromotion,
+                totalPrice: CalculateTotalPrice(hotelRoomPrice, travelToPrice, travelBackPrice, mealType)
                 );
-            reservation.AddEvent(new  ReservationCreated(reservation));
+            reservation.AddEvent(new ReservationCreated { Reservation = reservation});
             return reservation;
         }
 

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Reservations.Application.Queries
 {
-    public class GetOfferReservation : IQuery<OfferReservationDto>
+    public class GetReservation : IQuery<ReservationDto>
     {
-        public Guid OffertId { get; set; }
+        public Guid ReservationId { get; set; }
     }
 }

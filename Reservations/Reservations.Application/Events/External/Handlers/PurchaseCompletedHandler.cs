@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Reservations.Application.Events.External.Handlers
 {
-    public class TravelReservatedHandler : IEventHandler<TravelReservated>
+    public class PurchaseCompletedHandler : IEventHandler<PurchaseCompleted>
     {
-        public Task HandleAsync(TravelReservated @event, CancellationToken cancellationToken = default)
+        public Task HandleAsync(PurchaseCompleted @event, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

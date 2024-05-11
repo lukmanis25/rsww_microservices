@@ -40,17 +40,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/api/reservation", async (ICommandDispatcher commandDispatcher, AddOfferReservation command) =>
+app.MapPost("/api/reservation", async (ICommandDispatcher commandDispatcher, AddReservationWithoutId command) =>
 {
-    await commandDispatcher.SendAsync(command);
-    return Results.Created($"/api/reservation/{command.OfferId}", null);
+    Guid reservationId = Guid.NewGuid();
+    await commandDispatcher.SendAsync(new AddReservation(reservationId, command));
+    return Results.Created($"/api/reservation/{reservationId}", null);
 })
 .WithName("PostReservation")
 .WithOpenApi();
 
-app.MapGet("/api/reservation/{offerId}", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid offerId) =>
+app.MapGet("/api/reservation/{reservationId}", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid reservationId) =>
 {
-    var result = await queryDispatcher.QueryAsync(new GetOfferReservation { OffertId = offerId });
+    var result = await queryDispatcher.QueryAsync(new GetReservation { ReservationId = reservationId });
     return result;
 })
 .WithName("GetReservation")

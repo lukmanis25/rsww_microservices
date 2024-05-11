@@ -10,6 +10,7 @@ namespace Reservations.Core.ValueObjects
     {
         public Guid ResourceId { get; set; }
         public ReservationStatus Status { get; set; }
+        public float Price { get; set; }
 
     }
 }

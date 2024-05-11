@@ -9,9 +9,6 @@ namespace Reservations.Core.Events
 {
     public class ReservationCreated : IDomainEvent
     {
-        public Reservation OfferReservation { get; }
-
-        public ReservationCreated(Reservation offerReservation)
-            => OfferReservation = offerReservation;
+        public Reservation Reservation { get; set; }
     }
 }

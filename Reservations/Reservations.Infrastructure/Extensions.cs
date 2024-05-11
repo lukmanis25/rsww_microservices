@@ -29,7 +29,7 @@ namespace Reservations.Infrastructure
     {
         public static IConveyBuilder AddInfrastructure(this IConveyBuilder builder)
         {
-            builder.Services.AddTransient<IReservationRepository, OfferReservationMongoRepository>();
+            builder.Services.AddTransient<IReservationRepository, ReservationMongoRepository>();
             builder.Services.AddTransient<IMessageBroker, MessageBroker>();
 
             return builder
@@ -38,7 +38,7 @@ namespace Reservations.Infrastructure
                 .AddErrorHandler<ExceptionToResponseMapper>()
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
                 .AddMongo()
-                .AddMongoRepository<OfferReservationDocument, Guid>("reservations")
+                .AddMongoRepository<ReservationDocument, Guid>("reservations")
                 .AddRabbitMq();
         }
 
@@ -47,8 +47,8 @@ namespace Reservations.Infrastructure
             app.UseErrorHandler()
                 .UseConvey()
                 .UsePublicContracts<ContractAttribute>() // możliwe że to wymaga aby swagger inaczej wpiąć
-                .UseRabbitMq() //rzeczy do rabbita na końcu
-                .SubscribeEvent<TravelReservated>();
+                .UseRabbitMq(); //rzeczy do rabbita na końcu
+                //.SubscribeEvent<PurchaseCompleted>();
             
             return app;
         }

@@ -10,9 +10,8 @@ namespace Reservations.Core.Repositories
     public interface IReservationRepository
     {
         Task<Reservation> GetAsync(AggregateId id);
-        Task<bool> ExistsAsync(AggregateId id);
-        Task AddAsync(Reservation offertReservation);
-        Task UpdateAsync(Reservation offertReservation);
+        Task AddAsync(Reservation reservation);
+        Task UpdateAsync(Reservation reservation);
         Task DeleteAsync(AggregateId id);
     }
 }

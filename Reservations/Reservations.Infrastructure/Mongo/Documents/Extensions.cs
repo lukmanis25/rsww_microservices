@@ -1,5 +1,7 @@
 ﻿using Reservations.Application.DTO;
 using Reservations.Core.Entities;
+using Reservations.Core.ValueObjects;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,41 +13,58 @@ namespace Reservations.Infrastructure.Mongo.Documents
 {
     internal static class Extensions
     {
-        public static Reservation AsEntity(this OfferReservationDocument document)
-            => new OfferReservation(document.Id, document.CustomerId, document.OffertId,
-                        document.NumberOfAdults, document.NumberOfChildren, document.HotelRooms,
-                        document.TravelTo, document.TravelBack, document.CreationDateTime, document.Version);
+        public static Reservation AsEntity(this ReservationDocument document)
+            => new Reservation(
+                id: document.Id,
+                customerId: document.CustomerId,
+                numberOfAdults: document.NumberOfAdults,
+                numberOfChildrenTo3: document.NumberOfChildrenTo3,
+                numberOfChildrenTo10: document.NumberOfChildrenTo10,
+                numberOfChildrenTo18: document.NumberOfChildrenTo18,
+                hotelRoom: document.HotelRoom,
+                travelTo: document.TravelTo,
+                travelBack: document.TravelBack,
+                creationDateTime: document.CreationDateTime,
+                isPromotion: document.IsPromotion,
+                totalPrice: document.TotalPrice
+            );
 
 
-        public static OfferReservationDocument AsDocument(this Reservation entity)
+        public static ReservationDocument AsDocument(this Reservation entity)
         {
-            return new OfferReservationDocument
+            return new ReservationDocument
             {
                 Id = entity.Id,
                 CustomerId = entity.CustomerId,
-                OffertId = entity.OffertId,
                 NumberOfAdults = entity.NumberOfAdults,
-                NumberOfChildren = entity.NumberOfChildren,
-                HotelRooms = entity.HotelRoom,
+                NumberOfChildrenTo3 = entity.NumberOfChildrenTo3,
+                NumberOfChildrenTo10 = entity.NumberOfChildrenTo10,
+                NumberOfChildrenTo18 = entity.NumberOfChildrenTo18,
+                HotelRoom = entity.HotelRoom,
                 TravelTo = entity.TravelTo,
                 TravelBack = entity.TravelBack,
+                IsPromotion = entity.IsPromotion,
+                TotalPrice = entity.TotalPrice,
                 CreationDateTime = entity.CreationDateTime,
                 Version = entity.Version
             };
         }
 
-        public static OfferReservationDto AsDto(this OfferReservationDocument document)
+        public static ReservationDto AsDto(this ReservationDocument document)
         {
-            return new OfferReservationDto
+            return new ReservationDto
             {
                 Id = document.Id,
                 CustomerId = document.CustomerId,
-                OffertId = document.OffertId,
                 NumberOfAdults = document.NumberOfAdults,
-                NumberOfChildren = document.NumberOfChildren,
-                HotelRooms = document.HotelRooms,
+                NumberOfChildrenTo3 = document.NumberOfChildrenTo3,
+                NumberOfChildrenTo10 = document.NumberOfChildrenTo10,
+                NumberOfChildrenTo18 = document.NumberOfChildrenTo18,
+                HotelRoom = document.HotelRoom,
                 TravelTo = document.TravelTo,
                 TravelBack = document.TravelBack,
+                IsPromotion = document.IsPromotion,
+                TotalPrice = document.TotalPrice,
                 CreationDateTime = document.CreationDateTime,
             };
         }

@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 
 namespace Reservations.Infrastructure.Mongo.Queries.Handlers
 {
-    internal sealed class GetOfferReservationHandler : IQueryHandler<GetOfferReservation, OfferReservationDto>
+    internal sealed class GetReservationHandler : IQueryHandler<GetReservation, ReservationDto>
     {
         private readonly IMongoDatabase _database;
 
-        public GetOfferReservationHandler(IMongoDatabase database)
+        public GetReservationHandler(IMongoDatabase database)
         {
             _database = database;
         }
 
-        public async Task<OfferReservationDto> HandleAsync(GetOfferReservation query, CancellationToken cancellationToken = default)
+        public async Task<ReservationDto> HandleAsync(GetReservation query, CancellationToken cancellationToken = default)
         {
-            var document = await _database.GetCollection<OfferReservationDocument>("reservations")
-                .Find(r => r.OffertId == query.OffertId)
+            var document = await _database.GetCollection<ReservationDocument>("reservations")
+                .Find(r => r.Id == query.ReservationId)
                 .SingleOrDefaultAsync();
 
 

@@ -14,7 +14,7 @@ namespace Reservations.Infrastructure.Exceptions
         public object Map(Exception exception, object message)
             => exception switch
             {
-                //HotelRoomsOccupancyExceededException ex => new ReservateOffertRejected(ex., ex.Message,
+                //HotelRoomCancelReservationException ex => new ReservateOffertRejected(ex., ex.Message,
                 //    ex.Code)
             };
     }

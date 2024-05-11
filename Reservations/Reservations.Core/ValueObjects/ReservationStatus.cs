@@ -8,7 +8,6 @@ namespace Reservations.Core.ValueObjects
 {
     public enum ReservationStatus
     {
-        New,
         PendingReservationApproval,
         Reserved,
         Canceled,

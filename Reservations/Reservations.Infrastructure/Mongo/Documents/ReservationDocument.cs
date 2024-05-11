@@ -9,17 +9,20 @@ using System.Threading.Tasks;
 
 namespace Reservations.Infrastructure.Mongo.Documents
 {
-    internal sealed class OfferReservationDocument : IIdentifiable<Guid>
+    internal sealed class ReservationDocument : IIdentifiable<Guid>
     {
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
-        public Guid OffertId { get; set; }
         public int NumberOfAdults { get; set; }
-        public int NumberOfChildren { get; set; }
-        public HotelRoomReservation HotelRooms { get; set; }
+        public int NumberOfChildrenTo3 { get; set; }
+        public int NumberOfChildrenTo10 { get; set; }
+        public int NumberOfChildrenTo18 { get; set; }
+        public HotelRoomReservation HotelRoom { get; set; }
         public ResourceReservation TravelTo { get; set; }
         public ResourceReservation TravelBack { get; set; }
         public DateTime CreationDateTime { get; set; }
+        public bool IsPromotion { get; set; }
+        public float TotalPrice { get; set; }
         public int Version { get; set; }
     }
 }
