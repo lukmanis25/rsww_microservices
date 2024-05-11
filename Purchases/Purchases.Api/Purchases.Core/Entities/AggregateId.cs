@@ -1,4 +1,4 @@
-﻿using Purchases.Core.Exceptions;
+﻿using Reservations.Core.Exceptions;
 using System;
 
 namespace Purchases.Core.Entities
