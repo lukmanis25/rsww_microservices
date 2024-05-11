@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Reservations.Infrastructure.Mongo.Repositories
 {
-    internal sealed class OfferReservationMongoRepository : IOfferReservationRepository
+    internal sealed class OfferReservationMongoRepository : IReservationRepository
     {
         private readonly IMongoRepository<OfferReservationDocument, Guid> _repository;
 
         public OfferReservationMongoRepository(IMongoRepository<OfferReservationDocument, Guid> repository)
             => _repository = repository;
-        public Task AddAsync(OfferReservation offerReservation) => 
+        public Task AddAsync(Reservation offerReservation) => 
             _repository.AddAsync(offerReservation.AsDocument());
 
         public Task DeleteAsync(AggregateId id)
@@ -25,13 +25,13 @@ namespace Reservations.Infrastructure.Mongo.Repositories
         public Task<bool> ExistsAsync(AggregateId id)
             => _repository.ExistsAsync(r => r.Id == id);
 
-        public async Task<OfferReservation> GetAsync(AggregateId id)
+        public async Task<Reservation> GetAsync(AggregateId id)
         {
             var document = await _repository.GetAsync(r => r.Id == id);
             return document?.AsEntity();
         }
 
-        public Task UpdateAsync(OfferReservation offerReservation)
+        public Task UpdateAsync(Reservation offerReservation)
         {
             throw new NotImplementedException();
         }

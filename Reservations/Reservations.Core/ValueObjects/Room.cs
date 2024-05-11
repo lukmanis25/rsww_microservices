@@ -16,11 +16,12 @@ namespace Reservations.Core.ValueObjects
     }
     public class Room : IEquatable<Room>
     {
-        public int Occupancy { get; set; }
+        public int Capacity { get; set; }
         public RoomType Type { get; set; }
+        public int Count { get; set; }
 
         public bool Equals(Room reservation)
-            => Occupancy.Equals(reservation.Occupancy) && Type.Equals(reservation.Type);
+            => Capacity.Equals(reservation.Capacity) && Type.Equals(reservation.Type) && Count.Equals(reservation.Count);
 
         public override bool Equals(object obj)
             => obj is Room reservation && Equals(reservation);
@@ -30,8 +31,9 @@ namespace Reservations.Core.ValueObjects
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + Occupancy.GetHashCode();
+                hash = hash * 23 + Capacity.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
+                hash = hash * 23 + Count.GetHashCode();
                 return hash;
             }
         }

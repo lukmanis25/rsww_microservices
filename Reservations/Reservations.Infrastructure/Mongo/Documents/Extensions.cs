@@ -11,13 +11,13 @@ namespace Reservations.Infrastructure.Mongo.Documents
 {
     internal static class Extensions
     {
-        public static OfferReservation AsEntity(this OfferReservationDocument document)
+        public static Reservation AsEntity(this OfferReservationDocument document)
             => new OfferReservation(document.Id, document.CustomerId, document.OffertId,
                         document.NumberOfAdults, document.NumberOfChildren, document.HotelRooms,
                         document.TravelTo, document.TravelBack, document.CreationDateTime, document.Version);
 
 
-        public static OfferReservationDocument AsDocument(this OfferReservation entity)
+        public static OfferReservationDocument AsDocument(this Reservation entity)
         {
             return new OfferReservationDocument
             {
@@ -26,7 +26,7 @@ namespace Reservations.Infrastructure.Mongo.Documents
                 OffertId = entity.OffertId,
                 NumberOfAdults = entity.NumberOfAdults,
                 NumberOfChildren = entity.NumberOfChildren,
-                HotelRooms = entity.HotelRooms,
+                HotelRooms = entity.HotelRoom,
                 TravelTo = entity.TravelTo,
                 TravelBack = entity.TravelBack,
                 CreationDateTime = entity.CreationDateTime,

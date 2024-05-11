@@ -16,17 +16,17 @@ namespace Reservations.Application.Commands.Handlers
 {
     public class AddOfferReservationHandler : ICommandHandler<AddOfferReservation>
     {
-        private readonly IOfferReservationRepository _repository;
+        private readonly IReservationRepository _repository;
         private readonly IMessageBroker _messageBroker;
 
-        public AddOfferReservationHandler(IOfferReservationRepository repository, IMessageBroker messageBroker )
+        public AddOfferReservationHandler(IReservationRepository repository, IMessageBroker messageBroker )
         {
             _repository = repository;
             _messageBroker = messageBroker;
         }
         public async Task HandleAsync(AddOfferReservation command, CancellationToken cancellationToken = default)
         {
-            var reservation = OfferReservation.Create(
+            var reservation = Reservation.Create(
                 customerId: command.CustomerId,
                 offerId: command.OfferId,
                 numberOfAdults: command.NumberOfAdults,

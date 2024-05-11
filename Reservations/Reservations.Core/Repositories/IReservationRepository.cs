@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Reservations.Core.Repositories
 {
-    public interface IOfferReservationRepository
+    public interface IReservationRepository
     {
-        Task<OfferReservation> GetAsync(AggregateId id);
+        Task<Reservation> GetAsync(AggregateId id);
         Task<bool> ExistsAsync(AggregateId id);
-        Task AddAsync(OfferReservation offertReservation);
-        Task UpdateAsync(OfferReservation offertReservation);
+        Task AddAsync(Reservation offertReservation);
+        Task UpdateAsync(Reservation offertReservation);
         Task DeleteAsync(AggregateId id);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reservations.Core.ValueObjects
 {
-    public class HotelRoomsReservation : ResourceReservation
+    public class HotelRoomReservation : ResourceReservation
     {
         public IEnumerable<Room> Rooms { get; set; }
     }

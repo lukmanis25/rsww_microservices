@@ -29,7 +29,7 @@ namespace Reservations.Infrastructure
     {
         public static IConveyBuilder AddInfrastructure(this IConveyBuilder builder)
         {
-            builder.Services.AddTransient<IOfferReservationRepository, OfferReservationMongoRepository>();
+            builder.Services.AddTransient<IReservationRepository, OfferReservationMongoRepository>();
             builder.Services.AddTransient<IMessageBroker, MessageBroker>();
 
             return builder

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Reservations.Core.Events
 {
-    public class OfferReservationCreated : IDomainEvent
+    public class ReservationCreated : IDomainEvent
     {
-        public OfferReservation OfferReservation { get; }
+        public Reservation OfferReservation { get; }
 
-        public OfferReservationCreated(OfferReservation offerReservation)
+        public ReservationCreated(Reservation offerReservation)
             => OfferReservation = offerReservation;
     }
 }
