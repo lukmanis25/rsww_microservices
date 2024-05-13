@@ -30,6 +30,11 @@ namespace Purchases.Application.Commands.Handlers
                 throw new ReservationPurchaseDoesntExistException(command.ReservationId);
             }
             var purchase = await _repository.GetByReservationAsync(command.ReservationId);
+            if (purchase.PaymentStatus == Core.Entities.PaymentStatus.Cancelled)
+            {
+                throw new PaymentForReservationAlreadyCancelledException(command.ReservationId);
+            }
+
             if (purchase.PaymentStatus != null)
             {
                 throw new PaymentForReservationAlreadyStartedException(command.ReservationId);

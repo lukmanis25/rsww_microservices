@@ -25,6 +25,10 @@ namespace Purchases.Application.Events
         public async Task HandleAsync(PaymentFailed @event, CancellationToken cancellationToken = default)
         {
             var purchase = await _repository.GetAsync(@event.PurchaseId);
+            if(purchase.PaymentStatus == PaymentStatus.Cancelled)
+            {
+                return;
+            }
             purchase.FinishPayment(PaymentStatus.Failed);
 
             await _repository.UpdateAsync(purchase);

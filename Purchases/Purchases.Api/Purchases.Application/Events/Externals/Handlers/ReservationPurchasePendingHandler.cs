@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Purchases.Application.Events
 {
-    public class ReservationPurchasePendingHandle : IEventHandler<ReservationPurchasePending>
+    public class ReservationPurchasePendingHandler : IEventHandler<ReservationPurchasePending>
     {
         private readonly IPurchaseRepository _repository;
         private readonly IMessageBroker _messageBroker;
 
-        public ReservationPurchasePendingHandle(IPurchaseRepository repository, IMessageBroker messageBroker)
+        public ReservationPurchasePendingHandler(IPurchaseRepository repository, IMessageBroker messageBroker)
         {
             _repository = repository;
             _messageBroker = messageBroker;

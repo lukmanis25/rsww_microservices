@@ -26,6 +26,10 @@ namespace Purchases.Application.Events
         {
             var purchase = await _repository.GetAsync(@event.PurchaseId);
             purchase.FinishPayment(PaymentStatus.Accepted);
+            if (purchase.PaymentStatus == PaymentStatus.Cancelled)
+            {
+                return;
+            }
 
             await _repository.UpdateAsync(purchase);
 

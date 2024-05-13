@@ -11,7 +11,8 @@ namespace Purchases.Core.Entities
     {
         Pending,
         Failed,
-        Accepted
+        Accepted,
+        Cancelled
     }
     public class Purchase : AggregateRoot
     {
@@ -70,6 +71,12 @@ namespace Purchases.Core.Entities
             PaymentStatus = paymentStatus;
             PaymentDateTime = DateTime.Now;
             AddEvent(new PaymentFinished { Purchase = this });
+        }
+
+        public void CancelPayment()
+        {
+            PaymentStatus = Entities.PaymentStatus.Cancelled;
+            AddEvent(new PaymentCancelled { Purchase = this });
         }
     }
 }
