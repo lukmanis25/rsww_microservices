@@ -1,7 +1,7 @@
 ﻿using Convey.WebApi.Exceptions;
 using Convey;
-using Reservations.Application.Exceptions;
-using Reservations.Core.Exceptions;
+using Purchases.Application.Exceptions;
+using Purchases.Core.Exceptions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Infrastructure.Exceptions
+namespace Purchases.Infrastructure.Exceptions
 {
     internal sealed class ExceptionToResponseMapper : IExceptionToResponseMapper
     {

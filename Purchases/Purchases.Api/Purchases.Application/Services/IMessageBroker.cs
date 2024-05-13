@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Application.Services
+namespace Purchases.Application.Services
 {
     public interface IMessageBroker
     {

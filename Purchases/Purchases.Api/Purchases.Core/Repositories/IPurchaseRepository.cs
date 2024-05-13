@@ -9,9 +9,12 @@ namespace Purchases.Core.Purchases
 {
     public interface IPurchaseRepository
     {
+        Task<Purchase> GetByReservationAsync(Guid reservationId);
         Task<Purchase> GetAsync(AggregateId id);
-        Task AddAsync(Purchase reservation);
-        Task UpdateAsync(Purchase reservation);
+        Task<bool> ExistsByReservationAsync(Guid reservationId);
+        Task<bool> ExistsAsync(AggregateId id);
+        Task AddAsync(Purchase purchase);
+        Task<bool> UpdateAsync(Purchase purchase);
         Task DeleteAsync(AggregateId id);
     }
 }

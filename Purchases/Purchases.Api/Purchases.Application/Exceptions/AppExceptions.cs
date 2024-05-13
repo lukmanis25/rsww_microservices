@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Application.Exceptions
+namespace Purchases.Application.Exceptions
 {
     public abstract class AppException : Exception
     {

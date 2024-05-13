@@ -54,6 +54,15 @@ namespace Reservations.Application.Commands.Handlers
                 NumberOfPeople = reservation.NumberOfAdults + reservation.NumberOfChildrenTo3 
                 + reservation.NumberOfChildrenTo10 + reservation.NumberOfChildrenTo18
                 });
+
+            //test
+            await _messageBroker.PublishAsync(new ReservationPurchasePending
+            {
+                ReservationId = reservation.Id,
+                CustomerId = reservation.CustomerId,
+                ReservedUntil = reservation.CreationDateTime.AddMinutes(1),
+                TotalPrice = reservation.TravelTo.Price + reservation.TravelBack.Price + reservation.HotelRoom.Price,
+            });
         }
     }
 }

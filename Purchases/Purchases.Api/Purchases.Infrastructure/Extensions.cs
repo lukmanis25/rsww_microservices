@@ -9,27 +9,27 @@ using Convey.WebApi.CQRS;
 using Convey.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Reservations.Application;
-using Reservations.Application.Events.External;
-using Reservations.Application.Services;
-using Reservations.Core.Repositories;
-using Reservations.Infrastructure.Exceptions;
-using Reservations.Infrastructure.Mongo.Documents;
-using Reservations.Infrastructure.Mongo.Repositories;
-using Reservations.Infrastructure.Services;
+using Purchases.Application;
+using Purchases.Application.Events;
+using Purchases.Application.Services;
+using Purchases.Core.Purchases;
+using Purchases.Infrastructure.Exceptions;
+using Purchases.Infrastructure.Mongo.Documents;
+using Purchases.Infrastructure.Mongo.Repositories;
+using Purchases.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Infrastructure
+namespace Purchases.Infrastructure
 {
     public static class Extensions
     {
         public static IConveyBuilder AddInfrastructure(this IConveyBuilder builder)
         {
-            builder.Services.AddTransient<IReservationRepository, ReservationMongoRepository>();
+            builder.Services.AddTransient<IPurchaseRepository, PurchaseMongoRepository>();
             builder.Services.AddTransient<IMessageBroker, MessageBroker>();
 
             return builder
@@ -38,7 +38,7 @@ namespace Reservations.Infrastructure
                 .AddErrorHandler<ExceptionToResponseMapper>()
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
                 .AddMongo()
-                .AddMongoRepository<ReservationDocument, Guid>("reservations")
+                .AddMongoRepository<PurchaseDocument, Guid>("purchases")
                 .AddRabbitMq();
         }
 
@@ -46,9 +46,10 @@ namespace Reservations.Infrastructure
         {
             app.UseErrorHandler()
                 .UseConvey()
-                .UsePublicContracts<ContractAttribute>() // możliwe że to wymaga aby swagger inaczej wpiąć
-                .UseRabbitMq(); //rzeczy do rabbita na końcu
-                //.SubscribeEvent<PurchaseCompleted>();
+                .UsePublicContracts<ContractAttribute>() // możliwe że to wymaga aby swagger inaczej wpiąć.
+                .UseRabbitMq() //rzeczy do rabbita na końcu
+                .SubscribeEvent<ReservationPurchasePending>();
+                ;
             
             return app;
         }

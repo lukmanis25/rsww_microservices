@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Application
+namespace Purchases.Application
 {
     public class ContractAttribute : Attribute
     {

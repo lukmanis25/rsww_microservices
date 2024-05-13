@@ -10,6 +10,38 @@ using Convey.CQRS.Queries;
 using Reservations.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Reservations.Application.DTO;
+using Convey.Logging;
+using Convey.Types;
+using Microsoft.AspNetCore;
+
+//namespace Reservations.Api
+//{
+//    public class Program
+//    {
+//        public static async Task Main(string[] args)
+//            => await CreateWebHostBuilder(args)
+//                .Build()
+//                .RunAsync();
+
+//        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+//            => WebHost.CreateDefaultBuilder(args)
+//                .ConfigureServices(services => services
+//                    .AddConvey()
+//                    .AddWebApi()
+//                    .AddApplication()
+//                    .AddInfrastructure()
+//                    .Build())
+//                .Configure(app => app
+//                .UserInfrastructure()
+//                    .UseDispatcherEndpoints(endpoints => endpoints
+//                        .Get("", ctx => ctx.Response.WriteAsync(ctx.RequestServices.GetService<AppOptions>().Name))
+//                        .Post<AddReservation>("resources",
+//                            afterDispatch: (cmd, ctx) => ctx.Response.Created($"resources/{cmd.Id}"))
+//                ))
+//            //.UseLogging()
+//            ;
+//    }
+//}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,14 +56,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UserInfrastructure();
+//app.UseLogging();
 
-//MOZNA TAK USTAWIAC ENDPOINT ALE SWAGGER WTEDY GORZEJ DZIA£¥ I TRZEBA DODAC DO W INFRA
-//app.UseDispatcherEndpoints(endpoints => endpoints
-//    .Get<GetOfferReservation, OfferReservationDto>("reservations/{offerId}")
-//    .Post<AddOfferReservation>("reservations",
-//        afterDispatch: (cmd, ctx) => ctx.Response.Created($"reservations/{cmd.OfferId}"))
-//    );
+app.UserInfrastructure();
 
 
 if (app.Environment.IsDevelopment())
@@ -40,7 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/api/reservation", async (ICommandDispatcher commandDispatcher, AddReservationWithoutId command) =>
+app.MapPost("/api/reservations", async (ICommandDispatcher commandDispatcher, AddReservationWithoutId command) =>
 {
     Guid reservationId = Guid.NewGuid();
     await commandDispatcher.SendAsync(new AddReservation(reservationId, command));
@@ -49,7 +76,7 @@ app.MapPost("/api/reservation", async (ICommandDispatcher commandDispatcher, Add
 .WithName("PostReservation")
 .WithOpenApi();
 
-app.MapGet("/api/reservation/{reservationId}", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid reservationId) =>
+app.MapGet("/api/reservations/{reservationId}", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid reservationId) =>
 {
     var result = await queryDispatcher.QueryAsync(new GetReservation { ReservationId = reservationId });
     return result;

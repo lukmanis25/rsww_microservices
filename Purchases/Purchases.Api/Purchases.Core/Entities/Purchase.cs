@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Purchases.Core.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Purchases.Core.Entities
     {
         public Guid CustomerId { get; protected set; }
         public Guid ReservationId { get; protected set; }
-        public PaymentStatus PaymentStatus { get; protected set; }
+        public PaymentStatus? PaymentStatus { get; protected set; }
         public float Price { get; protected set; }
         public DateTime? PaymentDateTime { get; protected set; }
 
@@ -25,9 +26,10 @@ namespace Purchases.Core.Entities
                 Guid id,
                 Guid customerId,
                 Guid reservationId,
-                PaymentStatus paymentStatus,
+                PaymentStatus? paymentStatus,
                 float price,
-                DateTime? paymentDateTime
+                DateTime? paymentDateTime,
+                int version = 0
             )
         {
             Id = id;
@@ -36,6 +38,7 @@ namespace Purchases.Core.Entities
             PaymentStatus = paymentStatus;
             Price = price;
             PaymentDateTime = paymentDateTime;
+            Version = version;
         }
 
         public static Purchase Create(
@@ -49,10 +52,24 @@ namespace Purchases.Core.Entities
                 customerId: customerId,
                 reservationId: reservationId,
                 price: price,
-                paymentStatus: PaymentStatus.Pending,
+                paymentStatus: null,
                 paymentDateTime: null
                 );
+            purchase.AddEvent(new PurchaseCreated{ Purchase = purchase});
             return purchase;
+        }
+
+        public void StartPayment()
+        {
+            PaymentStatus = Entities.PaymentStatus.Pending;
+            AddEvent(new PaymentStarted { Purchase = this });
+        }
+
+        public void FinishPayment(PaymentStatus paymentStatus)
+        {
+            PaymentStatus = paymentStatus;
+            PaymentDateTime = DateTime.Now;
+            AddEvent(new PaymentFinished { Purchase = this });
         }
     }
 }

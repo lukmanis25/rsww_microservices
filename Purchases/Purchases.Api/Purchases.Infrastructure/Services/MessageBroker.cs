@@ -4,7 +4,7 @@ using Convey.MessageBrokers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Convey.MessageBrokers.Outbox;
-using Reservations.Application.Services;
+using Purchases.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Infrastructure.Services
+namespace Purchases.Infrastructure.Services
 {
     internal sealed class MessageBroker : IMessageBroker
     {

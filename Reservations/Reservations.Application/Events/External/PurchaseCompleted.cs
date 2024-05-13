@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Reservations.Application.Events.External
 {
-    [Message("purchases")] //to co będzie w servisie Purchase w appsettings->rabbitMq->exchange->name
+    [Message("purchase")] //to co będzie w servisie Purchase w appsettings->rabbitMq->exchange->name
     public class PurchaseCompleted : IEvent
     {
         public Guid PurchaseId { get; set; }

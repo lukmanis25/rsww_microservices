@@ -27,7 +27,8 @@ namespace Reservations.Infrastructure.Mongo.Documents
                 travelBack: document.TravelBack,
                 creationDateTime: document.CreationDateTime,
                 isPromotion: document.IsPromotion,
-                totalPrice: document.TotalPrice
+                totalPrice: document.TotalPrice,
+                version: document.Version
             );
 
 

@@ -61,9 +61,8 @@ namespace Reservations.Core.Entities
             TravelBack = travelBack;
             IsPromotion = isPromotion;
             CreationDateTime = creationDateTime;
-            Version = version;
             TotalPrice = totalPrice;
-
+            Version = version;
         }
 
         private static void ValidHotelRooms(HotelRoomReservation hotelRoom, int numberOfPeople)
