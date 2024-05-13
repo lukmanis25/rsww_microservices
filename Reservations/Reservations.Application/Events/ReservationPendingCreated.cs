@@ -1,4 +1,5 @@
 ﻿using Convey.CQRS.Events;
+using Reservations.Core.Entities;
 using Reservations.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,19 @@ namespace Reservations.Application.Events
     public class ReservationPendingCreated : IEvent
     {
         public Guid ReservationId { get; set; }
-        public HotelRoomReservation HotelRoom { get; set; }
-        public ResourceReservation TravelTo { get; set; }
-        public ResourceReservation TravelBack { get; set; }
+        public HotelRoomEventDto HotelRoom { get; set; }
+        public TransportEventDto TravelTo { get; set; }
+        public TransportEventDto TravelBack { get; set; }
         public int NumberOfPeople { get; set; }
+    }
+    public class TransportEventDto
+    {
+        public Guid TransportId { get; set; }
+    }
+
+    public class HotelRoomEventDto
+    {
+        public Guid HotelId { get; set; }
+        public IEnumerable<Room> Rooms { get; set; }
     }
 }

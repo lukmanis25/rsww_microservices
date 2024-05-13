@@ -47,9 +47,10 @@ namespace Reservations.Infrastructure
             app.UseErrorHandler()
                 .UseConvey()
                 .UsePublicContracts<ContractAttribute>() // możliwe że to wymaga aby swagger inaczej wpiąć
-                .UseRabbitMq(); //rzeczy do rabbita na końcu
-                //.SubscribeEvent<PurchaseCompleted>();
-            
+                .UseRabbitMq() //rzeczy do rabbita na końcu
+                //.SubscribeEvent<PurchaseCompleted>()
+                ;
+
             return app;
         }
 

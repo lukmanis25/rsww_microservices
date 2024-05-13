@@ -16,6 +16,7 @@ namespace Reservations.Core.Entities
         public int NumberOfChildrenTo3 { get; protected set; }
         public int NumberOfChildrenTo10 { get; protected set; }
         public int NumberOfChildrenTo18 { get; protected set; }
+        public Tour Tour { get; protected set; }
         public HotelRoomReservation HotelRoom { get; protected set; }
         public ResourceReservation TravelTo { get; protected set; }
         public ResourceReservation TravelBack { get; protected set; }
@@ -23,10 +24,20 @@ namespace Reservations.Core.Entities
         public float TotalPrice { get; protected set; }
         public DateTime CreationDateTime { get; protected set; }
 
-        public Reservation(Guid id, Guid customerId, int numberOfAdults, int numberOfChildrenTo3, int numberOfChildrenTo10,
-                            int numberOfChildrenTo18, HotelRoomReservation hotelRoom,  ResourceReservation travelTo,
-                            ResourceReservation travelBack, bool isPromotion, float totalPrice, DateTime creationDateTime, 
-                            int version = 0)
+        public Reservation(
+            Guid id, 
+            Guid customerId, 
+            int numberOfAdults, 
+            int numberOfChildrenTo3, 
+            int numberOfChildrenTo10,
+            int numberOfChildrenTo18, 
+            Tour tour,
+            HotelRoomReservation hotelRoom,  
+            ResourceReservation travelTo,
+            ResourceReservation travelBack, 
+            bool isPromotion, float totalPrice, 
+            DateTime creationDateTime,                        
+            int version = 0)
         {
 
             if (customerId == Guid.Empty)
@@ -44,6 +55,7 @@ namespace Reservations.Core.Entities
             NumberOfChildrenTo3 = numberOfChildrenTo3;
             NumberOfChildrenTo10 = numberOfChildrenTo10;
             NumberOfChildrenTo18 = numberOfChildrenTo18;
+            Tour = tour;
             HotelRoom = hotelRoom;
             TravelTo = travelTo;
             TravelBack = travelBack;
@@ -56,22 +68,47 @@ namespace Reservations.Core.Entities
 
         private static void ValidHotelRooms(HotelRoomReservation hotelRoom, int numberOfPeople)
         {
-            if (hotelRoom is null || hotelRoom.Room is null)
+            if (hotelRoom is null || hotelRoom.Rooms is null)
             {
                 throw new InvalidReservationException();
             }
 
-            int roomsOccupancy = hotelRoom.Room.Capacity * hotelRoom.Room.Count;
-            if(roomsOccupancy < numberOfPeople)
+            int roomsCapacity = hotelRoom.Rooms.Sum(room => room.Capacity * room.Count);
+            if(roomsCapacity < numberOfPeople)
             {
-                throw new HotelRoomCapacityExceededException(numberOfPeople, roomsOccupancy);
+                throw new HotelRoomCapacityExceededException(numberOfPeople, roomsCapacity);
             }
         }
 
-        private static float CalculateTotalPrice(float hotelRoomPrice, float travelToPrice, float travelBackPrice, MealType mealType)
+        private static float CalculateTotalPrice(
+            float hotelRoomPrice, 
+            float travelToPrice, 
+            float travelBackPrice, 
+            MealType mealType, 
+            bool isPromotion,
+            int numberOfAdults,
+            int numberOfChildrenTo3,
+            int numberOfChildrenTo10,
+            int numberOfChildrenTo18
+            )
         {
-            float totalPrice = hotelRoomPrice + travelToPrice + travelBackPrice;
-            totalPrice = mealType == MealType.AllInclusive ? totalPrice + 500 : totalPrice;
+            float transportPrice = numberOfAdults * (travelToPrice + travelBackPrice);
+            transportPrice += numberOfChildrenTo18 * (travelToPrice * 0.8f + travelBackPrice * 0.8f);
+            transportPrice += numberOfChildrenTo10 * (travelToPrice * 0.5f + travelBackPrice * 0.5f);
+            transportPrice += numberOfChildrenTo3 * (travelToPrice * 0.2f + travelBackPrice * 0.2f);
+           
+            int peopleNumber = numberOfAdults + numberOfChildrenTo3 + numberOfChildrenTo10 + numberOfChildrenTo18;
+            float hotelPrice = hotelRoomPrice;
+            if (mealType == MealType.AllInclusive)
+            {
+                hotelPrice += 300 * peopleNumber;
+            }
+            float totalPrice = transportPrice + hotelPrice;
+            if (isPromotion)
+            {
+                totalPrice *= 0.5f;
+
+            }
             return totalPrice;
         }
 
@@ -82,9 +119,10 @@ namespace Reservations.Core.Entities
             int numberOfChildrenTo3,
             int numberOfChildrenTo10,
             int numberOfChildrenTo18, 
+            Tour tour,
             Guid hotelId, 
             MealType mealType,
-            Room room, 
+            IEnumerable<Room> rooms, 
             float hotelRoomPrice, 
             Guid? travelToId = null, 
             float travelToPrice = 0,
@@ -96,7 +134,7 @@ namespace Reservations.Core.Entities
             var hotelRoom = new HotelRoomReservation
             {
                 ResourceId = hotelId,
-                Room = room,
+                Rooms = rooms,
                 Status = ReservationStatus.PendingReservationApproval,
                 MealType = mealType,
                 Price = hotelRoomPrice,
@@ -124,12 +162,14 @@ namespace Reservations.Core.Entities
                 numberOfChildrenTo3: numberOfChildrenTo3,
                 numberOfChildrenTo10: numberOfChildrenTo10,
                 numberOfChildrenTo18: numberOfChildrenTo18,
+                tour: tour,
                 hotelRoom: hotelRoom,
                 travelTo: travelTo,
                 travelBack: travelBack,
                 creationDateTime: creationDateTime,
                 isPromotion: isPromotion,
-                totalPrice: CalculateTotalPrice(hotelRoomPrice, travelToPrice, travelBackPrice, mealType)
+                totalPrice: CalculateTotalPrice(hotelRoomPrice, travelToPrice, travelBackPrice, mealType, 
+                    isPromotion, numberOfAdults, numberOfChildrenTo3, numberOfChildrenTo10, numberOfChildrenTo18)
                 );
             reservation.AddEvent(new ReservationCreated { Reservation = reservation});
             return reservation;

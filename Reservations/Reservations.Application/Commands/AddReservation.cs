@@ -1,4 +1,5 @@
 ﻿using Convey.CQRS.Commands;
+using Reservations.Core.Entities;
 using Reservations.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,10 @@ namespace Reservations.Application.Commands
         public int NumberOfChildrenTo3 { get; set; }
         public int NumberOfChildrenTo10 { get; set; }
         public int NumberOfChildrenTo18 { get; set; }
+        public Tour Tour { get; set; }
         public Guid HotelId { get; set; }
         public MealType MealType { get; set; }
-        public Room Room { get; set; }
+        public IEnumerable<Room> Rooms { get; set; }
         public float HotelRoomPrice { get; set; }
         public Guid? TravelToId { get; set; }
         public float TravelToPrice { get; set; }
@@ -36,9 +38,10 @@ namespace Reservations.Application.Commands
             NumberOfChildrenTo3 = reservationWithoutId.NumberOfChildrenTo3;
             NumberOfChildrenTo10 = reservationWithoutId.NumberOfChildrenTo10;
             NumberOfChildrenTo18 = reservationWithoutId.NumberOfChildrenTo18;
+            Tour = reservationWithoutId.Tour;
             HotelId = reservationWithoutId.HotelId;
             MealType = reservationWithoutId.MealType;
-            Room = reservationWithoutId.Room;
+            Rooms = reservationWithoutId.Rooms;
             HotelRoomPrice = reservationWithoutId.HotelRoomPrice;
             TravelToId = reservationWithoutId.TravelToId;
             TravelToPrice = reservationWithoutId.TravelToPrice;
@@ -54,9 +57,10 @@ namespace Reservations.Application.Commands
         public int NumberOfChildrenTo3 { get; set; }
         public int NumberOfChildrenTo10 { get; set; }
         public int NumberOfChildrenTo18 { get; set; }
+        public Tour Tour { get; set; }
         public Guid HotelId { get; set; }
         public MealType MealType { get; set; }
-        public Room Room { get; set; }
+        public IEnumerable<Room> Rooms { get; set; }
         public float HotelRoomPrice { get; set; }
         public Guid? TravelToId { get; set; }
         public float TravelToPrice { get; set; }

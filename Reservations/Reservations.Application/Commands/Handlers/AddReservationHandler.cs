@@ -34,9 +34,10 @@ namespace Reservations.Application.Commands.Handlers
                 numberOfChildrenTo3: command.NumberOfChildrenTo3,
                 numberOfChildrenTo10: command.NumberOfChildrenTo10,
                 numberOfChildrenTo18: command.NumberOfChildrenTo18,
+                tour: command.Tour,
                 hotelId: command.HotelId,
                 mealType: command.MealType,
-                room: command.Room,
+                rooms: command.Rooms,
                 hotelRoomPrice: command.HotelRoomPrice,
                 travelToId: command.TravelToId,
                 travelToPrice: command.TravelToPrice,
@@ -46,10 +47,10 @@ namespace Reservations.Application.Commands.Handlers
                 );
             await _repository.AddAsync(reservation);
             await _messageBroker.PublishAsync(new ReservationPendingCreated { 
-                ReservationId = reservation.Id, 
-                HotelRoom = reservation.HotelRoom,
-                TravelTo = reservation.TravelTo,
-                TravelBack = reservation.TravelBack,
+                ReservationId = reservation.Id,
+                HotelRoom = new HotelRoomEventDto { HotelId = command.HotelId, Rooms = reservation.HotelRoom.Rooms },
+                TravelTo = new TransportEventDto { TransportId = reservation.TravelTo.ResourceId },
+                TravelBack = new TransportEventDto { TransportId = reservation.TravelBack.ResourceId },
                 NumberOfPeople = reservation.NumberOfAdults + reservation.NumberOfChildrenTo3 
                 + reservation.NumberOfChildrenTo10 + reservation.NumberOfChildrenTo18
                 });
