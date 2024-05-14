@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Purchases.Application.Events
 {
-    public class PaymentCompletedHandler : IEventHandler<PaymemtCompleted>
+    public class PaymentCompletedHandler : IEventHandler<PaymentCompleted>
     {
         private readonly IPurchaseRepository _repository;
         private readonly IMessageBroker _messageBroker;
@@ -22,7 +22,7 @@ namespace Purchases.Application.Events
             _repository = repository;
             _messageBroker = messageBroker;
         }
-        public async Task HandleAsync(PaymemtCompleted @event, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(PaymentCompleted @event, CancellationToken cancellationToken = default)
         {
             var purchase = await _repository.GetAsync(@event.PurchaseId);
             purchase.FinishPayment(PaymentStatus.Accepted);

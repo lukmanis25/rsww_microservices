@@ -51,6 +51,8 @@ namespace Purchases.Infrastructure
                 .UseRabbitMq() //rzeczy do rabbita na końcu
                 .SubscribeEvent<ReservationPurchasePending>()
                 .SubscribeEvent<ReservationCancelled>()
+                .SubscribeEvent<PaymentFailed>()
+                .SubscribeEvent<PaymentCompleted>()
                 ;
             
             return app;
