@@ -1,4 +1,5 @@
 ﻿using Purchases.Application.DTO;
+using Purchases.Core;
 using Purchases.Core.Entities;
 using SharpCompress.Common;
 using System;
@@ -43,7 +44,7 @@ namespace Purchases.Infrastructure.Mongo.Documents
                 Id = document.Id,
                 CustomerId = document.CustomerId,
                 ReservationId = document.ReservationId,
-                PaymentStatus = document.PaymentStatus,
+                PaymentStatus = document.PaymentStatus != null ? document.PaymentStatus.Value.PaymentStatusAsString() : "",
                 Price = document.Price,
                 PaymentDateTime = document.PaymentDateTime,
             };

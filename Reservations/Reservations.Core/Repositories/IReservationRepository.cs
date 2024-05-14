@@ -11,7 +11,7 @@ namespace Reservations.Core.Repositories
     {
         Task<Reservation> GetAsync(AggregateId id);
         Task AddAsync(Reservation reservation);
-        Task UpdateAsync(Reservation reservation);
+        Task<bool> UpdateAsync(Reservation purchase);
         Task DeleteAsync(AggregateId id);
     }
 }

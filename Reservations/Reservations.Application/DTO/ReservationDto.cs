@@ -1,4 +1,5 @@
 ﻿using Reservations.Core.Entities;
+using Reservations.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,31 @@ namespace Reservations.Application.DTO
         public int NumberOfChildrenTo10 { get;  set; }
         public int NumberOfChildrenTo18 { get;  set; }
         public Tour Tour { get; set; }
-        public HotelRoomReservation HotelRoom { get;  set; }
-        public ResourceReservation TravelTo { get;  set; }
-        public ResourceReservation TravelBack { get;  set; }
+        public HotelRoomReservationDto HotelRoom { get;  set; }
+        public ResourceReservationDto TravelTo { get;  set; }
+        public ResourceReservationDto TravelBack { get;  set; }
         public bool IsPromotion { get;  set; }
         public float TotalPrice { get; set; }
         public DateTime CreationDateTime { get;  set; }
+    }
+
+    public class HotelRoomReservationDto : ResourceReservationDto
+    {
+        public string MealType { get; set; }
+        public IEnumerable<RoomDto> Rooms { get; set; }
+    }
+
+    public class RoomDto
+    {
+        public int Capacity { get; set; }
+        public string Type { get; set; }
+        public int Count { get; set; }
+    }
+
+    public class ResourceReservationDto
+    {
+        public Guid ResourceId { get; set; }
+        public string Status { get; set; }
+        public float Price { get; set; }
     }
 }

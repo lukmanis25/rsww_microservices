@@ -22,7 +22,7 @@ namespace Purchases.Core.Entities
         public float Price { get; protected set; }
         public DateTime? PaymentDateTime { get; protected set; }
 
-
+        
         public Purchase(
                 Guid id,
                 Guid customerId,

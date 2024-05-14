@@ -174,5 +174,18 @@ namespace Reservations.Core.Entities
             return reservation;
         }
 
+        public int GetNumberOfPeople()
+        {
+            return NumberOfAdults + NumberOfChildrenTo3 + NumberOfChildrenTo10 + NumberOfChildrenTo18;
+        }
+
+        public void CancelReservation()
+        {
+            TravelBack.Status = ReservationStatus.Cancelled;
+            TravelTo.Status = ReservationStatus.Cancelled;
+            HotelRoom.Status = ReservationStatus.Cancelled;
+            AddEvent(new ReservationCancelled { Reservation = this });
+        }
+
     }
 }

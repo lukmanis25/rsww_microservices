@@ -28,9 +28,14 @@ namespace Reservations.Infrastructure.Mongo.Repositories
             var document = await _repository.GetAsync(r => r.Id == id);
             return document?.AsEntity();
         }
-        public Task UpdateAsync(Reservation reservation)
-            => _repository.Collection.ReplaceOneAsync(r => r.Id == reservation.Id && r.Version < reservation.Version,
+        public async Task<bool> UpdateAsync(Reservation reservation)
+        {
+            var result = await _repository.Collection.ReplaceOneAsync(
+                r => r.Id == reservation.Id && r.Version < reservation.Version,
                 reservation.AsDocument());
+
+            return result.ModifiedCount > 0;
+        }
         //public  Task UpdateAsync(Reservation reservation)
         //{
         //    var filter = Builders<ReservationDocument>.Filter.And(

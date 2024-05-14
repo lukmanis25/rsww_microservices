@@ -10,7 +10,7 @@ namespace Reservations.Core.ValueObjects
     {
         PendingReservationApproval,
         Reserved,
-        Canceled,
+        Cancelled,
         Purchased
     }
 }

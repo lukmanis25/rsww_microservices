@@ -1,9 +1,11 @@
 ﻿using Reservations.Application.DTO;
+using Reservations.Core;
 using Reservations.Core.Entities;
 using Reservations.Core.ValueObjects;
 using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -64,13 +66,45 @@ namespace Reservations.Infrastructure.Mongo.Documents
                 NumberOfChildrenTo10 = document.NumberOfChildrenTo10,
                 NumberOfChildrenTo18 = document.NumberOfChildrenTo18,
                 Tour = document.Tour,
-                HotelRoom = document.HotelRoom,
-                TravelTo = document.TravelTo,
-                TravelBack = document.TravelBack,
+                HotelRoom = document.HotelRoom.AsDto(),
+                TravelTo = document.TravelTo.AsDto(),
+                TravelBack = document.TravelBack.AsDto(),
                 IsPromotion = document.IsPromotion,
                 TotalPrice = document.TotalPrice,
                 CreationDateTime = document.CreationDateTime,
             };
         }
+
+        public static HotelRoomReservationDto AsDto(this HotelRoomReservation hotelRoom)
+        {
+            return new HotelRoomReservationDto
+            {
+                ResourceId = hotelRoom.ResourceId,
+                Price = hotelRoom.Price,
+                Status = hotelRoom.Status.ReservationStatusAsString(),
+                MealType = hotelRoom.MealType.MealTypeAsString(),
+                Rooms = hotelRoom.Rooms.AsDto(),
+            };
+        }
+        public static IEnumerable<RoomDto> AsDto(this IEnumerable<Room> rooms)
+        {
+            return rooms.Select(room => new RoomDto
+            {
+                Capacity = room.Capacity,
+                Count = room.Count,
+                Type = room.Type.RoomTypeAsString(),                          
+            });
+        }
+
+        public static ResourceReservationDto AsDto(this ResourceReservation hotelRoom)
+        {
+            return new ResourceReservationDto
+            {
+                ResourceId = hotelRoom.ResourceId,
+                Price = hotelRoom.Price,
+                Status = hotelRoom.Status.ReservationStatusAsString()
+            };
+        }
+
     }
 }

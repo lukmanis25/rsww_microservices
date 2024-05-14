@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Purchases.Application;
 using Purchases.Application.Events;
+using Purchases.Application.Events.Externals;
 using Purchases.Application.Services;
 using Purchases.Core.Purchases;
 using Purchases.Infrastructure.Exceptions;
@@ -48,7 +49,8 @@ namespace Purchases.Infrastructure
                 .UseConvey()
                 .UsePublicContracts<ContractAttribute>() // możliwe że to wymaga aby swagger inaczej wpiąć.
                 .UseRabbitMq() //rzeczy do rabbita na końcu
-                .SubscribeEvent<ReservationPurchasePending>();
+                .SubscribeEvent<ReservationPurchasePending>()
+                .SubscribeEvent<ReservationCancelled>()
                 ;
             
             return app;

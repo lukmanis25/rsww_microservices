@@ -55,7 +55,7 @@ namespace Reservations.Application.Commands.Handlers
                 + reservation.NumberOfChildrenTo10 + reservation.NumberOfChildrenTo18
                 });
 
-            //test
+            //TEST - przeniesc potem do obbsługi eventu 
             await _messageBroker.PublishAsync(new ReservationPurchasePending
             {
                 ReservationId = reservation.Id,
@@ -63,6 +63,53 @@ namespace Reservations.Application.Commands.Handlers
                 ReservedUntil = reservation.CreationDateTime.AddMinutes(1),
                 TotalPrice = reservation.TravelTo.Price + reservation.TravelBack.Price + reservation.HotelRoom.Price,
             });
+
+            StartReservationTimeCounting(reservation.Id);
+
+        }
+
+        private async Task StartReservationTimeCounting(AggregateId reservationId)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(60));
+
+            //obsługa tego że kilka wątków może coś robić z bazą, ale ostatecznie liczy się wersja agregatu 
+            var attemps = 3;
+            while(attemps > 0)
+            {
+                var reservation = await _repository.GetAsync(reservationId);
+                if (
+                    (reservation.TravelBack.Status == ReservationStatus.Purchased || reservation.TravelBack.Status == ReservationStatus.Cancelled) &&
+                    (reservation.TravelTo.Status == ReservationStatus.Purchased || reservation.TravelTo.Status == ReservationStatus.Cancelled) &&
+                    (reservation.HotelRoom.Status == ReservationStatus.Purchased || reservation.HotelRoom.Status == ReservationStatus.Cancelled)
+                )
+                {
+                    //jak juz wcześniej zostało anulowane lub jest już zakupione to nic nie zmieniamy
+                    return;
+                }
+
+                reservation.CancelReservation();
+                var ifSucceed = await _repository.UpdateAsync(reservation);
+                if (ifSucceed)
+                {
+                    //jak się udało zanulować to wysyłamy event i koniec
+                    await _messageBroker.PublishAsync(new ReservationCancelled
+                    {
+                        ReservationId = reservationId,
+                        TravelTo = new TransportEventDto { TransportId = reservation.TravelTo.ResourceId },
+                        TravelBack = new TransportEventDto { TransportId = reservation.TravelBack.ResourceId },
+                        HotelRoom = new HotelRoomEventDto
+                        {
+                            HotelId = reservation.HotelRoom.ResourceId,
+                            Rooms = reservation.HotelRoom.Rooms,
+                        },
+                        NumberOfPeople = reservation.GetNumberOfPeople()
+                    });
+                    return;
+                }
+                //jak się nie udało to próbujemy jeszcze raz za 1s
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                attemps--;
+            }
         }
     }
 }

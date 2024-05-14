@@ -12,7 +12,7 @@ namespace Purchases.Application.DTO
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
         public Guid ReservationId { get; set; }
-        public PaymentStatus? PaymentStatus { get; set; }
+        public string PaymentStatus { get; set; }
         public float Price { get; set; }
         public DateTime? PaymentDateTime { get; set; }
     }
