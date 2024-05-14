@@ -61,7 +61,7 @@ namespace Reservations.Application.Commands.Handlers
                 ReservationId = reservation.Id,
                 CustomerId = reservation.CustomerId,
                 ReservedUntil = reservation.CreationDateTime.AddMinutes(1),
-                TotalPrice = reservation.TravelTo.Price + reservation.TravelBack.Price + reservation.HotelRoom.Price,
+                TotalPrice = reservation.TotalPrice,
             });
 
             StartReservationTimeCounting(reservation.Id);
@@ -77,11 +77,7 @@ namespace Reservations.Application.Commands.Handlers
             while(attemps > 0)
             {
                 var reservation = await _repository.GetAsync(reservationId);
-                if (
-                    (reservation.TravelBack.Status == ReservationStatus.Purchased || reservation.TravelBack.Status == ReservationStatus.Cancelled) &&
-                    (reservation.TravelTo.Status == ReservationStatus.Purchased || reservation.TravelTo.Status == ReservationStatus.Cancelled) &&
-                    (reservation.HotelRoom.Status == ReservationStatus.Purchased || reservation.HotelRoom.Status == ReservationStatus.Cancelled)
-                )
+                if (reservation.IsPurchased() || reservation.IsCancelled())
                 {
                     //jak juz wcześniej zostało anulowane lub jest już zakupione to nic nie zmieniamy
                     return;

@@ -179,12 +179,32 @@ namespace Reservations.Core.Entities
             return NumberOfAdults + NumberOfChildrenTo3 + NumberOfChildrenTo10 + NumberOfChildrenTo18;
         }
 
+        public bool IsCancelled()
+        {
+            return TravelBack.Status == ReservationStatus.Cancelled || TravelTo.Status == ReservationStatus.Cancelled
+                || HotelRoom.Status == ReservationStatus.Cancelled;
+        }
+
+        public bool IsPurchased()
+        {
+            return TravelBack.Status == ReservationStatus.Purchased && TravelTo.Status == ReservationStatus.Purchased
+                && HotelRoom.Status == ReservationStatus.Purchased;
+        }
+
         public void CancelReservation()
         {
             TravelBack.Status = ReservationStatus.Cancelled;
             TravelTo.Status = ReservationStatus.Cancelled;
             HotelRoom.Status = ReservationStatus.Cancelled;
             AddEvent(new ReservationCancelled { Reservation = this });
+        }
+
+        public void PurchaseReservation()
+        {
+            TravelBack.Status = ReservationStatus.Purchased;
+            TravelTo.Status = ReservationStatus.Purchased;
+            HotelRoom.Status = ReservationStatus.Purchased;
+            AddEvent(new ReservationPurchased { Reservation = this });
         }
 
     }

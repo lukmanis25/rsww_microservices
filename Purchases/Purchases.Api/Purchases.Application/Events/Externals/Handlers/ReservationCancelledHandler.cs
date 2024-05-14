@@ -25,11 +25,9 @@ namespace Purchases.Application.Events
         }
         public async Task HandleAsync(ReservationCancelled @event, CancellationToken cancellationToken = default)
         {
-            var ifExist = await _repository.ExistsByReservationAsync(@event.ReservationId);
-            if (!ifExist) 
-                return;
-
             var purchase = await _repository.GetByReservationAsync(@event.ReservationId);
+            if (purchase == null || purchase.PaymentStatus == PaymentStatus.Failed) 
+                return;
 
             purchase.CancelPayment();
             await _repository.UpdateAsync(purchase);
