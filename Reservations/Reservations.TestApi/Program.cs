@@ -84,4 +84,12 @@ app.MapGet("/api/reservations/{reservationId}", async (IQueryDispatcher queryDis
 .WithName("GetReservation")
 .WithOpenApi();
 
+app.MapGet("/api/users/{customerId}/reservations", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid customerId) =>
+{
+    var result = await queryDispatcher.QueryAsync(new GetUserReservations { CustomerId = customerId });
+    return result;
+})
+.WithName("GetUserReservations")
+.WithOpenApi();
+
 app.Run();
