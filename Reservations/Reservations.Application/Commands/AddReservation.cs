@@ -22,10 +22,10 @@ namespace Reservations.Application.Commands
         public MealType MealType { get; set; }
         public IEnumerable<Room> Rooms { get; set; }
         public float HotelRoomPrice { get; set; }
-        public Guid? TravelToId { get; set; }
-        public float TravelToPrice { get; set; }
-        public Guid? TravelBackId { get; set; }
-        public float TravelBackPrice { get; set; }
+        public Guid TransportToId { get; set; }
+        public float TransportToPrice { get; set; }
+        public Guid TransportBackId { get; set; }
+        public float TransportBackPrice { get; set; }
         public string PromotionCode { get; set; }
 
         public AddReservation(
@@ -43,10 +43,10 @@ namespace Reservations.Application.Commands
             MealType = reservationWithoutId.MealType;
             Rooms = reservationWithoutId.Rooms;
             HotelRoomPrice = reservationWithoutId.HotelRoomPrice;
-            TravelToId = reservationWithoutId.TravelToId;
-            TravelToPrice = reservationWithoutId.TravelToPrice;
-            TravelBackId = reservationWithoutId.TravelBackId;
-            TravelBackPrice = reservationWithoutId.TravelBackPrice;
+            TransportToId = reservationWithoutId.TransportToId;
+            TransportToPrice = reservationWithoutId.TransportToPrice;
+            TransportBackId = reservationWithoutId.TransportBackId;
+            TransportBackPrice = reservationWithoutId.TransportBackPrice;
             PromotionCode = reservationWithoutId.PromotionCode;
         }
     }
@@ -62,10 +62,10 @@ namespace Reservations.Application.Commands
         public MealType MealType { get; set; }
         public IEnumerable<Room> Rooms { get; set; }
         public float HotelRoomPrice { get; set; }
-        public Guid? TravelToId { get; set; }
-        public float TravelToPrice { get; set; }
-        public Guid? TravelBackId { get; set; }
-        public float TravelBackPrice { get; set; }
+        public Guid TransportToId { get; set; }
+        public float TransportToPrice { get; set; }
+        public Guid TransportBackId { get; set; }
+        public float TransportBackPrice { get; set; }
         public string PromotionCode { get; set; }
     }
 }

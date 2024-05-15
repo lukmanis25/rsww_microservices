@@ -39,30 +39,21 @@ namespace Reservations.Application.Commands.Handlers
                 mealType: command.MealType,
                 rooms: command.Rooms,
                 hotelRoomPrice: command.HotelRoomPrice,
-                travelToId: command.TravelToId,
-                travelToPrice: command.TravelToPrice,
-                travelBackId: command.TravelBackId,
-                travelBackPrice: command.TravelBackPrice,
+                transportToId: command.TransportToId,
+                transportToPrice: command.TransportToPrice,
+                transportBackId: command.TransportBackId,
+                transportBackPrice: command.TransportBackPrice,
                 promotionCode: command.PromotionCode
                 );
             await _repository.AddAsync(reservation);
             await _messageBroker.PublishAsync(new ReservationPendingCreated { 
                 ReservationId = reservation.Id,
                 HotelRoom = new HotelRoomEventDto { HotelId = command.HotelId, Rooms = reservation.HotelRoom.Rooms },
-                TravelTo = new TransportEventDto { TransportId = reservation.TravelTo.ResourceId },
-                TravelBack = new TransportEventDto { TransportId = reservation.TravelBack.ResourceId },
+                TransportTo = new TransportEventDto { TransportId = reservation.TransportTo.ResourceId },
+                TransportBack = new TransportEventDto { TransportId = reservation.TransportBack.ResourceId },
                 NumberOfPeople = reservation.NumberOfAdults + reservation.NumberOfChildrenTo3 
                 + reservation.NumberOfChildrenTo10 + reservation.NumberOfChildrenTo18
                 });
-
-            //TEST - przeniesc potem do obbsługi eventu 
-            await _messageBroker.PublishAsync(new ReservationPurchasePending
-            {
-                ReservationId = reservation.Id,
-                CustomerId = reservation.CustomerId,
-                ReservedUntil = reservation.CreationDateTime.AddMinutes(1),
-                TotalPrice = reservation.TotalPrice,
-            });
 
             StartReservationTimeCounting(reservation.Id);
 
@@ -91,8 +82,8 @@ namespace Reservations.Application.Commands.Handlers
                     await _messageBroker.PublishAsync(new ReservationCancelled
                     {
                         ReservationId = reservationId,
-                        TravelTo = new TransportEventDto { TransportId = reservation.TravelTo.ResourceId },
-                        TravelBack = new TransportEventDto { TransportId = reservation.TravelBack.ResourceId },
+                        TransportTo = new TransportEventDto { TransportId = reservation.TransportTo.ResourceId },
+                        TransportBack = new TransportEventDto { TransportId = reservation.TransportBack.ResourceId },
                         HotelRoom = new HotelRoomEventDto
                         {
                             HotelId = reservation.HotelRoom.ResourceId,

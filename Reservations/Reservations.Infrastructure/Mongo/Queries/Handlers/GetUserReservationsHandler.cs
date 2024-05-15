@@ -27,7 +27,7 @@ namespace Reservations.Infrastructure.Mongo.Queries.Handlers
                 .Find(r => r.CustomerId == query.CustomerId)
                 .ToListAsync();
 
-            return documents.Select(d => d.AsDto());
+            return documents.Select(d => d?.AsDto());
         }
     }
 }

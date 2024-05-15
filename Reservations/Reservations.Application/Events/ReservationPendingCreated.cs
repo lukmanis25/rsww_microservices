@@ -14,8 +14,8 @@ namespace Reservations.Application.Events
     {
         public Guid ReservationId { get; set; }
         public HotelRoomEventDto HotelRoom { get; set; }
-        public TransportEventDto TravelTo { get; set; }
-        public TransportEventDto TravelBack { get; set; }
+        public TransportEventDto TransportTo { get; set; }
+        public TransportEventDto TransportBack { get; set; }
         public int NumberOfPeople { get; set; }
     }
     public class TransportEventDto

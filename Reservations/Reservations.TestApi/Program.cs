@@ -73,7 +73,7 @@ app.MapPost("/api/reservations", async (ICommandDispatcher commandDispatcher, Ad
     await commandDispatcher.SendAsync(new AddReservation(reservationId, command));
     return Results.Created($"/api/reservation/{reservationId}", null);
 })
-.WithName("PostReservation")
+.WithName("AddReservation")
 .WithOpenApi();
 
 app.MapGet("/api/reservations/{reservationId}", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid reservationId) =>
@@ -82,6 +82,14 @@ app.MapGet("/api/reservations/{reservationId}", async (IQueryDispatcher queryDis
     return result;
 })
 .WithName("GetReservation")
+.WithOpenApi();
+
+app.MapPost("/api/reservations/{reservationId}", async (ICommandDispatcher commandDispatcher, [FromRoute] Guid reservationId) =>
+{
+    await commandDispatcher.SendAsync(new CancelReservation { ReservationId = reservationId});
+    return Results.Accepted();
+})
+.WithName("CancelReservation")
 .WithOpenApi();
 
 app.MapGet("/api/users/{customerId}/reservations", async (IQueryDispatcher queryDispatcher, [FromRoute] Guid customerId) =>

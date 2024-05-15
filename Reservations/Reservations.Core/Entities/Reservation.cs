@@ -18,8 +18,8 @@ namespace Reservations.Core.Entities
         public int NumberOfChildrenTo18 { get; protected set; }
         public Tour Tour { get; protected set; }
         public HotelRoomReservation HotelRoom { get; protected set; }
-        public ResourceReservation TravelTo { get; protected set; }
-        public ResourceReservation TravelBack { get; protected set; }
+        public ResourceReservation TransportTo { get; protected set; }
+        public ResourceReservation TransportBack { get; protected set; }
         public bool IsPromotion { get; protected set; }
         public float TotalPrice { get; protected set; }
         public DateTime CreationDateTime { get; protected set; }
@@ -33,8 +33,8 @@ namespace Reservations.Core.Entities
             int numberOfChildrenTo18, 
             Tour tour,
             HotelRoomReservation hotelRoom,  
-            ResourceReservation travelTo,
-            ResourceReservation travelBack, 
+            ResourceReservation transportTo,
+            ResourceReservation transportBack, 
             bool isPromotion, float totalPrice, 
             DateTime creationDateTime,                        
             int version = 0)
@@ -57,8 +57,8 @@ namespace Reservations.Core.Entities
             NumberOfChildrenTo18 = numberOfChildrenTo18;
             Tour = tour;
             HotelRoom = hotelRoom;
-            TravelTo = travelTo;
-            TravelBack = travelBack;
+            TransportTo = transportTo;
+            TransportBack = transportBack;
             IsPromotion = isPromotion;
             CreationDateTime = creationDateTime;
             TotalPrice = totalPrice;
@@ -81,8 +81,8 @@ namespace Reservations.Core.Entities
 
         private static float CalculateTotalPrice(
             float hotelRoomPrice, 
-            float travelToPrice, 
-            float travelBackPrice, 
+            float transportToPrice, 
+            float transportBackPrice, 
             MealType mealType, 
             bool isPromotion,
             int numberOfAdults,
@@ -91,10 +91,10 @@ namespace Reservations.Core.Entities
             int numberOfChildrenTo18
             )
         {
-            float transportPrice = numberOfAdults * (travelToPrice + travelBackPrice);
-            transportPrice += numberOfChildrenTo18 * (travelToPrice * 0.8f + travelBackPrice * 0.8f);
-            transportPrice += numberOfChildrenTo10 * (travelToPrice * 0.5f + travelBackPrice * 0.5f);
-            transportPrice += numberOfChildrenTo3 * (travelToPrice * 0.2f + travelBackPrice * 0.2f);
+            float transportPrice = numberOfAdults * (transportToPrice + transportBackPrice);
+            transportPrice += numberOfChildrenTo18 * (transportToPrice * 0.8f + transportBackPrice * 0.8f);
+            transportPrice += numberOfChildrenTo10 * (transportToPrice * 0.5f + transportBackPrice * 0.5f);
+            transportPrice += numberOfChildrenTo3 * (transportToPrice * 0.2f + transportBackPrice * 0.2f);
            
             int peopleNumber = numberOfAdults + numberOfChildrenTo3 + numberOfChildrenTo10 + numberOfChildrenTo18;
             float hotelPrice = hotelRoomPrice;
@@ -123,10 +123,10 @@ namespace Reservations.Core.Entities
             MealType mealType,
             IEnumerable<Room> rooms, 
             float hotelRoomPrice, 
-            Guid? travelToId = null, 
-            float travelToPrice = 0,
-            Guid? travelBackId = null,
-            float travelBackPrice = 0,
+            Guid? transportToId = null, 
+            float transportToPrice = 0,
+            Guid? transportBackId = null,
+            float transportBackPrice = 0,
             string promotionCode = "" 
             )
         {
@@ -141,14 +141,14 @@ namespace Reservations.Core.Entities
 
             var isPromotion = promotionCode == "PROMO";
 
-            var travelTo = travelToId != null && travelBackId != Guid.Empty
-                ? new ResourceReservation { ResourceId = travelToId.Value, Status = ReservationStatus.PendingReservationApproval, 
-                    Price = travelToPrice}
+            var transportTo = transportToId != null && transportBackId != Guid.Empty
+                ? new ResourceReservation { ResourceId = transportToId.Value, Status = ReservationStatus.PendingReservationApproval, 
+                    Price = transportToPrice}
                 : null;
 
-            var travelBack = travelBackId != null && travelBackId != Guid.Empty
-                ? new ResourceReservation { ResourceId = travelBackId.Value, Status = ReservationStatus.PendingReservationApproval,
-                    Price = travelBackPrice
+            var transportBack = transportBackId != null && transportBackId != Guid.Empty
+                ? new ResourceReservation { ResourceId = transportBackId.Value, Status = ReservationStatus.PendingReservationApproval,
+                    Price = transportBackPrice
                 }
                 : null;
 
@@ -163,11 +163,11 @@ namespace Reservations.Core.Entities
                 numberOfChildrenTo18: numberOfChildrenTo18,
                 tour: tour,
                 hotelRoom: hotelRoom,
-                travelTo: travelTo,
-                travelBack: travelBack,
+                transportTo: transportTo,
+                transportBack: transportBack,
                 creationDateTime: creationDateTime,
                 isPromotion: isPromotion,
-                totalPrice: CalculateTotalPrice(hotelRoomPrice, travelToPrice, travelBackPrice, mealType, 
+                totalPrice: CalculateTotalPrice(hotelRoomPrice, transportToPrice, transportBackPrice, mealType, 
                     isPromotion, numberOfAdults, numberOfChildrenTo3, numberOfChildrenTo10, numberOfChildrenTo18)
                 );
             reservation.AddEvent(new ReservationCreated { Reservation = reservation});
@@ -181,30 +181,53 @@ namespace Reservations.Core.Entities
 
         public bool IsCancelled()
         {
-            return TravelBack.Status == ReservationStatus.Cancelled || TravelTo.Status == ReservationStatus.Cancelled
+            return TransportBack.Status == ReservationStatus.Cancelled || TransportTo.Status == ReservationStatus.Cancelled
                 || HotelRoom.Status == ReservationStatus.Cancelled;
         }
 
         public bool IsPurchased()
         {
-            return TravelBack.Status == ReservationStatus.Purchased && TravelTo.Status == ReservationStatus.Purchased
+            return TransportBack.Status == ReservationStatus.Purchased && TransportTo.Status == ReservationStatus.Purchased
                 && HotelRoom.Status == ReservationStatus.Purchased;
+        }
+
+        public bool AreAllResourceReserved()
+        {
+            return TransportBack.Status == ReservationStatus.Reserved && TransportTo.Status == ReservationStatus.Reserved
+                && HotelRoom.Status == ReservationStatus.Reserved;
         }
 
         public void CancelReservation()
         {
-            TravelBack.Status = ReservationStatus.Cancelled;
-            TravelTo.Status = ReservationStatus.Cancelled;
+            TransportBack.Status = ReservationStatus.Cancelled;
+            TransportTo.Status = ReservationStatus.Cancelled;
             HotelRoom.Status = ReservationStatus.Cancelled;
             AddEvent(new ReservationCancelled { Reservation = this });
         }
 
         public void PurchaseReservation()
         {
-            TravelBack.Status = ReservationStatus.Purchased;
-            TravelTo.Status = ReservationStatus.Purchased;
+            TransportBack.Status = ReservationStatus.Purchased;
+            TransportTo.Status = ReservationStatus.Purchased;
             HotelRoom.Status = ReservationStatus.Purchased;
             AddEvent(new ReservationPurchased { Reservation = this });
+        }
+
+        public void ReserveResource(Guid resourceId)
+        {
+            if(TransportTo.ResourceId == resourceId)
+            {
+                TransportTo.ResourceId = resourceId;
+            }
+            else if(TransportBack.ResourceId == resourceId)
+            {
+                TransportBack.ResourceId = resourceId;
+            }
+            else if(HotelRoom.ResourceId == resourceId)
+            {
+                HotelRoom.ResourceId = resourceId;
+            }
+            AddEvent(new ResourceReserved { Reservation = this });
         }
 
     }

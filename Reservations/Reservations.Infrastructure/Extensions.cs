@@ -50,6 +50,7 @@ namespace Reservations.Infrastructure
                 .UseRabbitMq() //rzeczy do rabbita na końcu
                 .SubscribeEvent<PurchaseCompleted>()
                 .SubscribeEvent<PurchaseCancelled>()
+                .SubscribeEvent<TransportReserved>()
                 ;
 
             return app;

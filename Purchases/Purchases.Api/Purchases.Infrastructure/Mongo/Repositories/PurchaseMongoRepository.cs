@@ -17,7 +17,7 @@ namespace Purchases.Infrastructure.Mongo.Repositories
 
         public PurchaseMongoRepository(IMongoRepository<PurchaseDocument, Guid> repository)
             => _repository = repository;
-
+    
         public Task AddAsync(Purchase purchase) =>
             _repository.AddAsync(purchase.AsDocument());
 

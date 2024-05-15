@@ -18,8 +18,8 @@ namespace Reservations.Application.DTO
         public int NumberOfChildrenTo18 { get;  set; }
         public Tour Tour { get; set; }
         public HotelRoomReservationDto HotelRoom { get;  set; }
-        public ResourceReservationDto TravelTo { get;  set; }
-        public ResourceReservationDto TravelBack { get;  set; }
+        public ResourceReservationDto TransportTo { get;  set; }
+        public ResourceReservationDto TransportBack { get;  set; }
         public bool IsPromotion { get;  set; }
         public float TotalPrice { get; set; }
         public DateTime CreationDateTime { get;  set; }

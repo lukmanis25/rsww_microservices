@@ -18,8 +18,8 @@ namespace Reservations.Infrastructure.Mongo.Documents
         public int NumberOfChildrenTo18 { get; set; }
         public Tour Tour { get; set; }
         public HotelRoomReservation HotelRoom { get; set; }
-        public ResourceReservation TravelTo { get; set; }
-        public ResourceReservation TravelBack { get; set; }
+        public ResourceReservation TransportTo { get; set; }
+        public ResourceReservation TransportBack { get; set; }
         public DateTime CreationDateTime { get; set; }
         public bool IsPromotion { get; set; }
         public float TotalPrice { get; set; }
