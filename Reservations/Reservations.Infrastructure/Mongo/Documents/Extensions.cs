@@ -91,7 +91,7 @@ namespace Reservations.Infrastructure.Mongo.Documents
             return rooms.Select(room => new RoomDto
             {
                 Capacity = room.Capacity,
-                Count = room.Count,
+                Amount = room.Amount,
                 Type = room.Type.RoomTypeAsString(),                          
             });
         }

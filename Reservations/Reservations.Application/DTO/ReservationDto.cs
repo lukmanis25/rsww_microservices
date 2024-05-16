@@ -35,7 +35,7 @@ namespace Reservations.Application.DTO
     {
         public int Capacity { get; set; }
         public string Type { get; set; }
-        public int Count { get; set; }
+        public int Amount { get; set; }
     }
 
     public class ResourceReservationDto

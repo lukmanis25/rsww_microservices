@@ -21,7 +21,7 @@ namespace Reservations.Core.ValueObjects
         public int Amount { get; set; }
 
         public bool Equals(Room reservation)
-            => Capacity.Equals(reservation.Capacity) && Type.Equals(reservation.Type) && Amount.Equals(reservation.Amount);
+            => Capacity.Equals(reservation.Capacity) && Type.Equals(reservation.Type);
 
         public override bool Equals(object obj)
             => obj is Room reservation && Equals(reservation);
@@ -33,7 +33,6 @@ namespace Reservations.Core.ValueObjects
                 int hash = 17;
                 hash = hash * 23 + Capacity.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                hash = hash * 23 + Amount.GetHashCode();
                 return hash;
             }
         }

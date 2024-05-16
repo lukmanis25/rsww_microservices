@@ -72,7 +72,7 @@ namespace Reservations.Core.Entities
                 throw new InvalidReservationException();
             }
 
-            int roomsCapacity = hotelRoom.Rooms.Sum(room => room.Capacity * room.Count);
+            int roomsCapacity = hotelRoom.Rooms.Sum(room => room.Capacity * room.Amount);
             if(roomsCapacity < numberOfPeople)
             {
                 throw new HotelRoomCapacityExceededException(numberOfPeople, roomsCapacity);
