@@ -33,7 +33,7 @@ namespace Hotels.Infrastructure.Mongo.Repositories
         public async Task<HotelResource> GetHotelResource(AggregateId hotelId)
         {
             var events = await _database.GetCollection<HotelRoomAmountChangeDocument>("hotel_events")
-                .Find(r => r.Id == hotelId)
+                .Find(r => r.HotelId == hotelId)
                 .ToListAsync();
 
             List<Room> roomList = [];

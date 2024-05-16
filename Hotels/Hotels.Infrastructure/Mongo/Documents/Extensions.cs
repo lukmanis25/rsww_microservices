@@ -1,5 +1,6 @@
 ﻿using Hotels.Core.Events;
 using Hotels.Infrastructure.Mongo.Documents;
+using System;
 
 namespace Reservations.Infrastructure.Mongo.Documents
 {
@@ -9,7 +10,8 @@ namespace Reservations.Infrastructure.Mongo.Documents
         {
             return new HotelRoomAmountChangeDocument
             {
-                Id = @event.HotelId,
+                Id = Guid.NewGuid(),
+                HotelId = @event.HotelId,
                 Room = @event.Room,
             };
         }

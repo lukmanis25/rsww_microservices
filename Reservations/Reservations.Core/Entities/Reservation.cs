@@ -213,20 +213,21 @@ namespace Reservations.Core.Entities
             AddEvent(new ReservationPurchased { Reservation = this });
         }
 
-        public void ReserveResource(Guid resourceId)
+        public void ReserveTransport(Guid resourceId)
         {
             if(TransportTo.ResourceId == resourceId)
             {
-                TransportTo.ResourceId = resourceId;
+                TransportTo.Status = ReservationStatus.Reserved;
             }
             else if(TransportBack.ResourceId == resourceId)
             {
-                TransportBack.ResourceId = resourceId;
+                TransportBack.Status = ReservationStatus.Reserved;
             }
-            else if(HotelRoom.ResourceId == resourceId)
-            {
-                HotelRoom.ResourceId = resourceId;
-            }
+            AddEvent(new ResourceReserved { Reservation = this });
+        }
+        public void ReserveHotel(Guid resourceId)
+        {
+            HotelRoom.Status = ReservationStatus.Reserved;
             AddEvent(new ResourceReserved { Reservation = this });
         }
 

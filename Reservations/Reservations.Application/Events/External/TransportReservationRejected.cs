@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Reservations.Application.Events.External
 {
-    [Message("transport")]
-    public class TransportReserved : IEvent
+    [Message("Transport")]
+    public class TransportReservationRejected : IEvent
     {
         public Guid TransportId { get; set; }
         public Guid ReservationId { get; set; }

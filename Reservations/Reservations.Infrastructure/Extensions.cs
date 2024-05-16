@@ -51,6 +51,9 @@ namespace Reservations.Infrastructure
                 .SubscribeEvent<PurchaseCompleted>()
                 .SubscribeEvent<PurchaseCancelled>()
                 .SubscribeEvent<TransportReserved>()
+                .SubscribeEvent<HotelReserved>()
+                .SubscribeEvent<HotelReservationRejected>()
+                .SubscribeEvent<TransportReservationRejected>()
                 ;
 
             return app;

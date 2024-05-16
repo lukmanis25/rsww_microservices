@@ -12,6 +12,7 @@ namespace Hotels.Infrastructure.Mongo.Documents
     internal sealed class HotelRoomAmountChangeDocument : IIdentifiable<Guid>
     {
         public Guid Id { get; set; }
+        public Guid HotelId { get; set; }
         public Room Room { get; set; }
     }
 }

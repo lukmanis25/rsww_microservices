@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace Reservations.Application.Events.External.Handlers
 {
-    public class TransportReservedHandler : IEventHandler<TransportReserved>
+    public class HotelReservedHandler : IEventHandler<HotelReserved>
     {
         private readonly IReservationRepository _repository;
         private readonly IMessageBroker _messageBroker;
 
-        public TransportReservedHandler(IReservationRepository repository, IMessageBroker messageBroker)
+        public HotelReservedHandler(IReservationRepository repository, IMessageBroker messageBroker)
         {
             _repository = repository;
             _messageBroker = messageBroker;
         }
-        public async Task HandleAsync(TransportReserved @event, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(HotelReserved @event, CancellationToken cancellationToken = default)
         {
             var attemps = 3;
             while (attemps > 0)
@@ -31,7 +31,7 @@ namespace Reservations.Application.Events.External.Handlers
                 if (reservation == null || reservation.IsCancelled() || reservation.IsPurchased())
                     return;
 
-                reservation.ReserveTransport(@event.TransportId);
+                reservation.ReserveHotel(@event.HotelId);
 
                 var ifSucceed = await _repository.UpdateAsync(reservation);
                 if (ifSucceed)

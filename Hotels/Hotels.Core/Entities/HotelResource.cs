@@ -36,12 +36,18 @@ namespace Hotels.Core.Entities
             foreach ( var room in rooms )
             {
                 var existingRoom = Rooms.FirstOrDefault(r => r == room);
-                if ( existingRoom != null || existingRoom.Amount - room.Amount < 0 )
+                if ( existingRoom == null || existingRoom.Amount - room.Amount < 0 )
                 {
                     return false;
                 }
             }
             return true;
+        }
+
+        public int GetRoomAmout(Room room)
+        {
+            var hotelResourceRoom = Rooms.FirstOrDefault(r => r == room);
+            return hotelResourceRoom != null ? hotelResourceRoom.Amount : 0;
         }
     }
 }
