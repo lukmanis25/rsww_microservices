@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hotels.Core.Events;
-using Reservations.Infrastructure.Mongo.Documents;
-using Reservations.Core.ValueObjects;
+using Hotels.Infrastructure.Mongo.Documents;
+using Hotels.Core.ValueObjects;
 
 namespace Hotels.Infrastructure.Mongo.Repositories
 {

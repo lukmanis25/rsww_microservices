@@ -152,7 +152,7 @@ namespace Reservations.Core.Entities
                 }
                 : null;
 
-            var creationDateTime = DateTime.Now;
+            var creationDateTime = DateTime.UtcNow;
 
             var reservation = new Reservation(
                 id: id, 

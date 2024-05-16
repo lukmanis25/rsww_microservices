@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reservations.Core.ValueObjects
+namespace Hotels.Core.ValueObjects
 {
     public enum RoomType
     {

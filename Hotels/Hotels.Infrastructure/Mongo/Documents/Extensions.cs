@@ -2,7 +2,7 @@
 using Hotels.Infrastructure.Mongo.Documents;
 using System;
 
-namespace Reservations.Infrastructure.Mongo.Documents
+namespace Hotels.Infrastructure.Mongo.Documents
 {
     internal static class Extensions
     {

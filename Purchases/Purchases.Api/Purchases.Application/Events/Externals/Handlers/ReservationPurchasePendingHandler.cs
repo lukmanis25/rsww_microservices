@@ -25,7 +25,7 @@ namespace Purchases.Application.Events
         public async Task HandleAsync(ReservationPurchasePending @event, CancellationToken cancellationToken = default)
         {
             var ifExist = await _repository.ExistsByReservationAsync(@event.ReservationId);
-            if (ifExist || @event.ReservedUntil < DateTime.Now) 
+            if (ifExist || @event.ReservedUntil < DateTime.UtcNow) 
                 return;
 
             var purchase = Purchase.Create(

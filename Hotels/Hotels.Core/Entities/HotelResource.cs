@@ -1,5 +1,5 @@
 ﻿using Hotels.Core.Events;
-using Reservations.Core.ValueObjects;
+using Hotels.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

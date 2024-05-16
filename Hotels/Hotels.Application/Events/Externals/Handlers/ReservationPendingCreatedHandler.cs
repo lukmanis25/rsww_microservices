@@ -31,7 +31,7 @@ namespace Hotels.Application.Events
                 await _repository.AddEvent(new Core.Events.HotelRoomAmountChange
                 {
                     HotelId = @event.HotelRoom.HotelId,
-                    Room = new Reservations.Core.ValueObjects.Room
+                    Room = new Hotels.Core.ValueObjects.Room
                     {
                         Amount = room.Amount * (-1),
                         Capacity = room.Capacity,
