@@ -71,7 +71,8 @@ app.MapPost("/api/reservations", async (ICommandDispatcher commandDispatcher, Ad
 {
     Guid reservationId = Guid.NewGuid();
     await commandDispatcher.SendAsync(new AddReservation(reservationId, command));
-    return Results.Created($"/api/reservation/{reservationId}", null);
+    //return Results.Created($"/api/reservation/{reservationId}", null);
+    return new { ReservationId=reservationId };
 })
 .WithName("AddReservation")
 .WithOpenApi();
