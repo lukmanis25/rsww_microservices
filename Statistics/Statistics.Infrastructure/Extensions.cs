@@ -39,6 +39,7 @@ namespace Statistics.Infrastructure
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
                 .AddMongo()
                 .AddMongoRepository<StatisticAmountChangeDocument, Guid>("statistic_events")
+                .AddMongoRepository<HotelDocument, Guid>("hotels")
                 .AddRabbitMq();
         }
 

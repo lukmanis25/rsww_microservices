@@ -29,11 +29,17 @@ namespace Statistics.Infrastructure.Mongo.Queries
                 .Find(r => r.StatisticType == query.StatisticType)
                 .ToListAsync();
 
+            var hotels = await _database.GetCollection<HotelDocument>("hotels")
+                .Find(r => true)
+                .ToListAsync(cancellationToken);
+
+            var hotelDictionary = hotels.ToDictionary(h => h.Id, h => h.HotelName);
+
             var groupedEvents = events
-                .GroupBy(e => e.HotelId) //TODO dodać join 
+                .GroupBy(e => e.HotelId)
                 .Select(g => new HotelStatisticDto
                 {
-                    HotelName = g.Key.ToString(),
+                    HotelName = hotelDictionary.TryGetValue(g.Key, out var hotelName) ? hotelName : g.Key.ToString(),
                     StatisticType = query.StatisticType.StatisticTypeAsString(),
                     Amount = g.Sum(e => e.Amount)
                 })
