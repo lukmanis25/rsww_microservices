@@ -30,6 +30,15 @@ namespace Reservations.Application.Events.External.Handlers
             reservation.PurchaseReservation();
 
             await _repository.UpdateAsync(reservation);
+
+            await _messageBroker.PublishAsync(new ReservationPurchased
+            {
+                Destination = reservation.Tour.TourDestination,
+                HotelId = reservation.HotelRoom.ResourceId,
+                Rooms = reservation.HotelRoom.Rooms,
+                TransportToId = reservation.TransportTo.ResourceId,
+                TransportBackId = reservation.TransportBack.ResourceId
+            });
         }
     }
 }

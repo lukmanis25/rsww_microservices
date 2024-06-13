@@ -31,6 +31,10 @@ namespace Transports.Infrastructure.Mongo.Repositories
 
         public async Task<TransportResource> GetTransportResource(AggregateId transportId)
         {
+            var x = await _database.GetCollection<TransportAmountChangeDocument>("transport_events").Find(r => true)
+                .ToListAsync(); 
+            
+
             var events = await _database.GetCollection<TransportAmountChangeDocument>("transport_events")
                 .Find(r => r.TransportId == transportId)
                 .ToListAsync();

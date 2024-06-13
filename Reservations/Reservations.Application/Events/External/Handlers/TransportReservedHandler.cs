@@ -44,6 +44,11 @@ namespace Reservations.Application.Events.External.Handlers
                             CustomerId = reservation.CustomerId,
                             ReservedUntil = reservation.CreationDateTime.AddMinutes(1),
                             TotalPrice = reservation.TotalPrice,
+                            Destination = reservation.Tour.TourDestination,
+                            HotelId = reservation.HotelRoom.ResourceId,
+                            Rooms = reservation.HotelRoom.Rooms,
+                            TransportToId = reservation.TransportTo.ResourceId,
+                            TransportBackId = reservation.TransportBack.ResourceId
                         });
                     }
                     return;
