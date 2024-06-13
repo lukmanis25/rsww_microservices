@@ -32,10 +32,6 @@ namespace Hotels.Infrastructure.Mongo.Repositories
 
         public async Task<HotelResource> GetHotelResource(AggregateId hotelId)
         {
-
-            var x = await _database.GetCollection<HotelRoomAmountChangeDocument>("hotel_events").Find(r => true)
-                .ToListAsync();
-
             var events = await _database.GetCollection<HotelRoomAmountChangeDocument>("hotel_events")
                 .Find(r => r.HotelId == hotelId)
                 .ToListAsync();
