@@ -1,5 +1,7 @@
 ﻿using Convey.CQRS.Events;
+using Microsoft.AspNetCore.SignalR;
 using Reservations.Application.Services;
+using Reservations.Application.SignalRHub;
 using Reservations.Core.Entities;
 using Reservations.Core.Repositories;
 using System;

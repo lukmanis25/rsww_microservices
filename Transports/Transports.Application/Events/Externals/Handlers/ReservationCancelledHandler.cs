@@ -24,6 +24,9 @@ namespace Transports.Application.Events
         }
         public async Task HandleAsync(ReservationCancelled @event, CancellationToken cancellationToken = default)
         {
+            var transportToResource = await _repository.GetTransportResource(@event.TransportTo.TransportId);
+            var transportBackResource = await _repository.GetTransportResource(@event.TransportBack.TransportId);
+
             //transport to
             await _repository.AddEvent(new Core.Events.TransportAmountChange
             {
@@ -31,10 +34,11 @@ namespace Transports.Application.Events
                 Amount = @event.NumberOfPeople
             });
 
+            var transportToResourceAmount = transportToResource != null ? transportToResource.Amount : 0;
             await _messageBroker.PublishAsync(new TransportAvailabilityChanged
             {
                 TransportId = @event.TransportTo.TransportId,
-                Amount = @event.NumberOfPeople
+                Amount = transportToResourceAmount + @event.NumberOfPeople
             });
 
             //transport back
@@ -44,10 +48,11 @@ namespace Transports.Application.Events
                 Amount = @event.NumberOfPeople
             });
 
+            var transportBackResourceAmount = transportBackResource != null ? transportBackResource.Amount : 0;
             await _messageBroker.PublishAsync(new TransportAvailabilityChanged
             {
                 TransportId = @event.TransportBack.TransportId,
-                Amount = @event.NumberOfPeople
+                Amount = transportBackResourceAmount + @event.NumberOfPeople
             });
         }
     }

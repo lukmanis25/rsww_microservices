@@ -24,7 +24,8 @@ namespace Hotels.Application.Events
         }
         public async Task HandleAsync(ReservationCancelled @event, CancellationToken cancellationToken = default)
         {
-            foreach(var room in @event.HotelRoom.Rooms)
+            var hotelResource = await _repository.GetHotelResource(@event.HotelRoom.HotelId);
+            foreach (var room in @event.HotelRoom.Rooms)
             {
                 await _repository.AddEvent(new Core.Events.HotelRoomAmountChange
                 {
@@ -32,13 +33,16 @@ namespace Hotels.Application.Events
                     Room = room
                 });
 
+                var hotelResourceRoomAmount = hotelResource != null ? hotelResource.GetRoomAmout(room) : 0;
                 await _messageBroker.PublishAsync(new HotelAvailabilityChanged
                 {
                     HotelId = @event.HotelRoom.HotelId,
-                    Amount = room.Amount,
+                    Amount = hotelResourceRoomAmount + room.Amount,
                     Type = room.Type,
                     Capacity = room.Capacity
                 });
+                var x = hotelResourceRoomAmount + room.Amount;
+                var y = x;
             }
         }
     }

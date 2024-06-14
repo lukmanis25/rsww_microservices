@@ -1,5 +1,7 @@
 ﻿using Convey.CQRS.Events;
+using Microsoft.AspNetCore.SignalR;
 using Reservations.Application.Services;
+using Reservations.Application.SignalRHub;
 using Reservations.Core.Entities;
 using Reservations.Core.Repositories;
 using System;
@@ -15,11 +17,13 @@ namespace Reservations.Application.Events.External.Handlers
     {
         private readonly IReservationRepository _repository;
         private readonly IMessageBroker _messageBroker;
+        private readonly IHubContext<ReservationHub, INotificationsClient> _hubContext;
 
-        public TransportReservedHandler(IReservationRepository repository, IMessageBroker messageBroker)
+        public TransportReservedHandler(IReservationRepository repository, IMessageBroker messageBroker, IHubContext<ReservationHub, INotificationsClient> context)
         {
             _repository = repository;
             _messageBroker = messageBroker;
+            _hubContext = context;
         }
         public async Task HandleAsync(TransportReserved @event, CancellationToken cancellationToken = default)
         {
@@ -50,6 +54,7 @@ namespace Reservations.Application.Events.External.Handlers
                             TransportToId = reservation.TransportTo.ResourceId,
                             TransportBackId = reservation.TransportBack.ResourceId
                         });
+                        await _hubContext.Clients.All.ReceiveNotification($"TourReserved {reservation.Tour.TourId}");
                     }
                     return;
                 }
