@@ -41,8 +41,6 @@ namespace Hotels.Application.Events
                     Type = room.Type,
                     Capacity = room.Capacity
                 });
-                var x = hotelResourceRoomAmount + room.Amount;
-                var y = x;
             }
         }
     }

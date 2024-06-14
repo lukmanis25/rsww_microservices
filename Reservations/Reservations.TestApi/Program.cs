@@ -13,6 +13,7 @@ using Reservations.Application.DTO;
 using Convey.Logging;
 using Convey.Types;
 using Microsoft.AspNetCore;
+using Reservations.Application.SignalRHub;
 
 //namespace Reservations.Api
 //{
@@ -54,12 +55,15 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 //app.UseLogging();
 
 app.UserInfrastructure();
 
+app.MapHub<ReservationHub>("reservation-hub");
 
 if (app.Environment.IsDevelopment())
 {

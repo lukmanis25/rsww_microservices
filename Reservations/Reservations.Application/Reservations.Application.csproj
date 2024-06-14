@@ -10,6 +10,8 @@
 	<PackageReference Include="Convey.CQRS.Events" Version="1.1.448" />
 	<PackageReference Include="Convey.CQRS.Queries" Version="1.1.448" />
 	<PackageReference Include="Convey.MessageBrokers" Version="1.1.448" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.6" />
   </ItemGroup>
 
   <ItemGroup>
